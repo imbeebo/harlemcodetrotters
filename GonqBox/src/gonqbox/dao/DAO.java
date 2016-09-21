@@ -1,4 +1,4 @@
-package GonqBox.dao;
+package gonqbox.dao;
 
 public class DAO {
 
