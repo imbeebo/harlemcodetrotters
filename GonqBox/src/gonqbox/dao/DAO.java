@@ -12,16 +12,17 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import gonqbox.models.*;
 
 public class DAO {
 	private static Connection conn = null;
+	private static DAO dao = new DAO();
 
-	private DAO() {
-	}
+	private DAO() {	}
 
-	public static Connection getDAO() {
+	public static DAO getInstance() {
 		if (conn == null) {
 			try {
 				String url = "jdbc:mysql://localhost:3306/";
@@ -45,18 +46,18 @@ public class DAO {
 				return null;
 			}
 		}
-		return conn;
+		return dao;
 	}
 
 	/**
-	 * Calls stored procedure to check
-	 * @return User object
+	 * Calls stored procedure to check if valid login, and return user object
+	 * @return User object if valid, otherwise null
 	 */
-	public static User loginUser(String username, String password) {
+	public User loginUser(String username, String password) {
 		try {
 			PreparedStatement statement = null;
 			ResultSet rs = null;
-			String query = "SELECT first FROM tblUsers WHERE";
+			String query = "LOGIN_USER_SP";
 
 			statement = conn.prepareStatement(query);
 			rs = statement.executeQuery();
@@ -69,5 +70,47 @@ public class DAO {
 			System.out.println("Problem with the SQL: " + e);
 			return null;
 		}
+	}
+	/**
+	 * Registers user if there is no conflicting username or email
+	 * @return User object if no conflict, otherwise null
+	 */
+	public User registerUser(String username, String password) {
+		try {
+			PreparedStatement statement = null;
+			ResultSet rs = null;
+			String query = "REGISTER_USER_SP";
+
+			statement = conn.prepareStatement(query);
+			rs = statement.executeQuery();
+			User currentUser = null;
+			while (rs.next()) {
+				currentUser = new User(rs);
+			}
+			return currentUser;
+		} catch (SQLException e) {
+			System.out.println("Problem with the SQL: " + e);
+			return null;
+		}
+	}
+	
+	public Folder getUserFolder(int userId) {
+		return null;
+	}
+	
+	public ArrayList<File> getUserFiles(int userId) {
+		return null;
+	}
+	
+	public ArrayList<Permissions> getPermissions() {
+		return null;
+	}
+	
+	public ArrayList<Collaborator> getCollaboratorsByFile(int fileID) {
+		return null;
+	}
+	
+	public ArrayList<Collaborator> getCollaboratorsByUserID(int userID) {
+		return null;
 	}
 }
