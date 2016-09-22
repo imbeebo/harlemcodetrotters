@@ -1,3 +1,8 @@
+/**
+ * @author Gabriel Hounsome
+ * Model for Files
+ */
+
 package gonqbox.models;
 
 import java.sql.ResultSet;

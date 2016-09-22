@@ -1,3 +1,8 @@
+/**
+ * @author Gabriel Hounsome
+ * Model for Permissions
+ */
+
 package gonqbox.models;
 
 import java.sql.ResultSet;

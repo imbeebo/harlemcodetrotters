@@ -1,3 +1,8 @@
+/**
+ * @author Gabriel Hounsome
+ * Model for Users
+ */
+
 package gonqbox.models;
 
 import java.sql.Date;

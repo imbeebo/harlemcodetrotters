@@ -1,3 +1,10 @@
+/**
+ * @author Gabriel Hounsome
+ * DAO for the project. Creates a single connection to the database, 
+ * and has functions for all the queries, which maps them to the
+ * objects in gonqbox.models
+ */
+
 package gonqbox.dao;
 
 import java.sql.Connection;
