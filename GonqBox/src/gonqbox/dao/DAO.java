@@ -113,4 +113,16 @@ public class DAO {
 	public ArrayList<Collaborator> getCollaboratorsByUserID(int userID) {
 		return null;
 	}
+	
+	public boolean addFile(File fileToAdd) {
+		return false;
+	}
+	
+	public boolean addCollaboratorToFile(File fileToShare) {
+		return false;
+	}
+	
+	public boolean deleteCollaboratorFromFile(Collaborator toDelete) {
+		return false;
+	}
 }
