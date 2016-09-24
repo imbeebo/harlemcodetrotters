@@ -13,6 +13,7 @@ public class User {
 	private int user_id;
 	private String username;
 	private Date account_creation_date;
+	private Date last_logged_in;
 	private String user_email;
 
 	public User(ResultSet rs) throws SQLException {
@@ -23,6 +24,7 @@ public class User {
 			user_id = rs.getInt("user_id");
 			username = rs.getString("username");
 			account_creation_date = rs.getDate("account_creation_date");
+			last_logged_in = rs.getDate("last_logged_in");
 			user_email = rs.getString("user_email");
 	}
 	
@@ -36,6 +38,11 @@ public class User {
 	
 	public Date getCreationDate() {
 		return account_creation_date;
+	}
+
+	
+	public Date getLastLoggedIn() {
+		return last_logged_in;
 	}
 	
 	public String getEmail() {
