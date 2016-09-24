@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import gonqbox.models.*;
 
@@ -26,7 +27,7 @@ public class DAO {
 		if (conn == null) {
 			try {
 				String url = "jdbc:mysql://localhost:3306/";
-				String dbName = "form";
+				String dbName = "gonqbox";
 				String driver = "com.mysql.jdbc.Driver";
 				String userName = "root";
 				String password = "admin";
@@ -57,9 +58,10 @@ public class DAO {
 		try {
 			PreparedStatement statement = null;
 			ResultSet rs = null;
-			String query = "LOGIN_USER_SP";
-
+			String query = "SELECT * FROM 'gonqbox'.'tbluser' WHERE username = ? AND password = ?";
 			statement = conn.prepareStatement(query);
+			statement.setString(1, username);
+			statement.setString(2, password);
 			rs = statement.executeQuery();
 			User currentUser = null;
 			while (rs.next()) {
@@ -75,19 +77,24 @@ public class DAO {
 	 * Registers user if there is no conflicting username or email
 	 * @return User object if no conflict, otherwise null
 	 */
-	public User registerUser(String username, String password) {
+	public User registerUser(String username, String password, String email) {
 		try {
 			PreparedStatement statement = null;
-			ResultSet rs = null;
-			String query = "REGISTER_USER_SP";
+			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+			
+			String query = "INSERT INTO 'gonqbox'.'tbluser' ('username', "+
+					"'account_creation_date', 'last_logged_in_date', "+
+					"'user_mail', 'password') VALUES(?, ?, ?, ?, ?);";
 
 			statement = conn.prepareStatement(query);
-			rs = statement.executeQuery();
-			User currentUser = null;
-			while (rs.next()) {
-				currentUser = new User(rs);
-			}
-			return currentUser;
+			statement.setString(1, username);
+			statement.setDate(2, date);
+			statement.setDate(3, date);
+			statement.setString(4, email);
+			statement.setString(5, password);
+			statement.executeUpdate();
+
+			return loginUser(username, password);
 		} catch (SQLException e) {
 			System.out.println("Problem with the SQL: " + e);
 			return null;
