@@ -11,8 +11,8 @@ CREATE TABLE IF NOT EXISTS `GONQBOX`.`tblUser` (
 	`last_logged_in_date` DATE NOT NULL,
 	`user_mail` VARCHAR(40) NOT NULL,
 	`password` VARCHAR(255) NULL,
-	`salt` NVARCHAR(128) NOT NULL,
-	`hash` NVARCHAR(128) NOT NULL,
+	`salt` NVARCHAR(128) NULL,
+	`hash` NVARCHAR(128) NULL,
 	PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB;
 
