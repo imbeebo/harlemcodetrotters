@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS `GONQBOX`.`tblUser` (
 	`account_creation_date` DATE NOT NULL,
 	`last_logged_in_date` DATE NOT NULL,
 	`user_mail` VARCHAR(40) NOT NULL,
+	`password` VARCHAR(255) NULL,
 	`salt` NVARCHAR(128) NOT NULL,
 	`hash` NVARCHAR(128) NOT NULL,
 	PRIMARY KEY (`user_id`)
