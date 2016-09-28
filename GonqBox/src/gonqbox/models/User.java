@@ -24,8 +24,8 @@ public class User {
 			user_id = rs.getInt("user_id");
 			username = rs.getString("username");
 			account_creation_date = rs.getDate("account_creation_date");
-			last_logged_in = rs.getDate("last_logged_in");
-			user_email = rs.getString("user_email");
+			last_logged_in = rs.getDate("last_logged_in_date");
+			user_email = rs.getString("user_mail");
 	}
 	
 	public int getUserID() {
