@@ -58,7 +58,7 @@ public class DAO {
 		try {
 			PreparedStatement statement = null;
 			ResultSet rs = null;
-			String query = "SELECT * FROM 'gonqbox'.'tbluser' WHERE username = ? AND password = ?";
+			String query = "SELECT * FROM tbluser WHERE username = ? AND password = ?";
 			statement = conn.prepareStatement(query);
 			statement.setString(1, username);
 			statement.setString(2, password);
@@ -82,9 +82,9 @@ public class DAO {
 			PreparedStatement statement = null;
 			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 			
-			String query = "INSERT INTO 'gonqbox'.'tbluser' ('username', "+
-					"'account_creation_date', 'last_logged_in_date', "+
-					"'user_mail', 'password') VALUES(?, ?, ?, ?, ?);";
+			String query = "INSERT INTO `tbluser` (`username`, "+
+					"`account_creation_date`, `last_logged_in_date`, "+
+					"`user_mail`, `password`) VALUES(?, ?, ?, ?, ?);";
 
 			statement = conn.prepareStatement(query);
 			statement.setString(1, username);
