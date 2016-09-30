@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import gonqbox.dao.DAO;
 import gonqbox.models.User;
 
 @WebServlet(name = "register", urlPatterns = { "/register" })
@@ -62,6 +63,14 @@ public class RegisterServlet extends HttpServlet {
 
 			if(error == null)
 				error = check_password(password);
+
+			if(error == null)
+			{
+				User u = DAO.getInstance().registerUser(username, password, email);
+
+				if(u == null)
+					error = "Username or email already in use.";
+			}
 
 			if(error != null)
 			{
