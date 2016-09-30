@@ -21,7 +21,8 @@ public class DAO {
 	private static Connection conn = null;
 	private static DAO dao = new DAO();
 
-	private DAO() {	}
+	private DAO() {
+	}
 
 	public static DAO getInstance() {
 		if (conn == null) {
@@ -52,13 +53,16 @@ public class DAO {
 
 	/**
 	 * Calls stored procedure to check if valid login, and return user object
+	 * 
 	 * @return User object if valid, otherwise null
 	 */
 	public User loginUser(String username, String password) {
 		try {
 			PreparedStatement statement = null;
 			ResultSet rs = null;
-			String query = "SELECT * FROM tbluser WHERE username = ? AND password = ?";
+
+			String query = "SELECT user_id, username, account_creation_date, "
+					+ "last_logged_in, user_email FROM tbluser WHERE username = ? " + "AND password = ?";
 			statement = conn.prepareStatement(query);
 			statement.setString(1, username);
 			statement.setString(2, password);
@@ -73,18 +77,19 @@ public class DAO {
 			return null;
 		}
 	}
+
 	/**
 	 * Registers user if there is no conflicting username or email
+	 * 
 	 * @return User object if no conflict, otherwise null
 	 */
 	public User registerUser(String username, String password, String email) {
 		try {
 			PreparedStatement statement = null;
 			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-			
-			String query = "INSERT INTO `tbluser` (`username`, "+
-					"`account_creation_date`, `last_logged_in_date`, "+
-					"`user_mail`, `password`) VALUES(?, ?, ?, ?, ?);";
+
+			String query = "INSERT INTO `tbluser` (`username`, " + "`account_creation_date`, `last_logged_in_date`, "
+					+ "`user_mail`, `password`) VALUES(?, ?, ?, ?, ?);";
 
 			statement = conn.prepareStatement(query);
 			statement.setString(1, username);
@@ -100,35 +105,90 @@ public class DAO {
 			return null;
 		}
 	}
-	
+
 	public Folder getUserFolder(int userId) {
-		return null;
+		try {
+			PreparedStatement statement = null;
+			ResultSet rs = null;
+
+			String query = "SELECT * FROM tblfolder WHERE user_id = ? ";
+			statement = conn.prepareStatement(query);
+			statement.setInt(1, userId);
+			rs = statement.executeQuery();
+			Folder userFolder = null;
+			while (rs.next()) {
+				userFolder = new Folder(rs);
+			}
+			return userFolder;
+		} catch (SQLException e) {
+			System.out.println("Problem with the SQL: " + e);
+			return null;
+		}
 	}
-	
+
 	public ArrayList<File> getUserFiles(int userId) {
-		return null;
+		try {
+			PreparedStatement statement = null;
+			ResultSet rs = null;
+
+			String query = "SELECT * FROM tblfile WHERE user_id = ? ";
+			statement = conn.prepareStatement(query);
+			statement.setInt(1, userId);
+			rs = statement.executeQuery();
+			ArrayList<File> files = new ArrayList<>();
+			while (rs.next()) {
+				files.add(new File(rs));
+			}
+			return files;
+		} catch (SQLException e) {
+			System.out.println("Problem with the SQL: " + e);
+			return null;
+		}
 	}
-	
+
 	public ArrayList<Permissions> getPermissions() {
 		return null;
 	}
-	
+
 	public ArrayList<Collaborator> getCollaboratorsByFile(int fileID) {
 		return null;
 	}
-	
+
 	public ArrayList<Collaborator> getCollaboratorsByUserID(int userID) {
 		return null;
 	}
-	
-	public boolean addFile(File fileToAdd) {
-		return false;
+
+	public boolean addFile(File file) {
+		try {
+			PreparedStatement statement = null;
+			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+
+			String query = "INSERT INTO `tblfile` (`name`, `sequence`, `uploader_id`, `foler_id`, `checksum`, " +
+					"`checksum_date`, `checksum_date_last_verified`) VALUES (?, ?, ?, ?, ?, ?, ?);";
+
+			statement = conn.prepareStatement(query);
+			statement.setString(1, file.getName());
+			statement.setString(2, file.getSequence());
+			statement.setInt(3, file.getUploaderID());
+			statement.setInt(4, file.getFolderID());
+			statement.setString(5, file.getChecksum());
+			statement.setDate(6, file.getChecksumDate());
+			statement.setDate(7, file.getChecksumDateLastChecked());
+			if(statement.executeUpdate() <= 0) {
+				return false;
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Problem with the SQL: " + e);
+			return false;
+		}
+		return true;
 	}
-	
+
 	public boolean addCollaboratorToFile(File fileToShare) {
 		return false;
 	}
-	
+
 	public boolean deleteCollaboratorFromFile(Collaborator toDelete) {
 		return false;
 	}
