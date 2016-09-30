@@ -1,15 +1,14 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <html>
 <head>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" integrity="sha384-2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj" crossorigin="anonymous">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Login Application</title>
+<title>GonqBox Login</title>
 </head>
 <body>
 	<form action="loginServlet" method="post">
 		<fieldset style="width: 300px">
-			<legend> Login to App </legend>
+			<legend> Login to GonqBox </legend>
 			<table>
 				<tr>
 					<td>User ID</td>
