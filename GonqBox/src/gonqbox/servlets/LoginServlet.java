@@ -17,10 +17,22 @@ import javax.servlet.http.HttpSession;
 import gonqbox.dao.DAO;
 import gonqbox.models.User;
 
+/** Purpose: Servlet to login user. Redirects to homepage 
+ * on success. Reloads index.jsp on failure.
+ * @author Mathew Boland
+ * @version 0.1
+ */
 public class LoginServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	
+	//DAO Instance to access database
 	private DAO dao = DAO.getInstance();
+	
+	/**
+     * Purpose: To check the given username and password
+     * @param request and response
+     * @return void
+     */
     public void doPost(HttpServletRequest request, HttpServletResponse response)  
             throws ServletException, IOException {  
 
