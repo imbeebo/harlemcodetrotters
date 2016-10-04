@@ -17,11 +17,11 @@
 			<table>
 				<tr>
 					<td>Username</td>
-					<td><input type="text" name="username" required="required" value="<%= request.getAttribute("username") %>" /></td>
+					<td><input type="text" name="username" required="required" /></td>
 				</tr>
 				<tr>
 					<td>EMail Address</td>
-					<td><input type="text" name="email-address" required="required" value="<%= request.getAttribute("email_address") %>" /></td>
+					<td><input type="text" name="email-address" required="required" /></td>
 				</tr>
 				<tr>
 					<td>Password</td>
