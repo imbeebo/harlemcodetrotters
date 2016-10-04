@@ -84,7 +84,7 @@ public class DAO {
 			
 			String query = "INSERT INTO `tbluser` (`username`, "+
 					"`account_creation_date`, `last_logged_in_date`, "+
-					"`user_mail`, `password`) VALUES(?, ?, ?, ?, ?);";
+					"`user_mail`, `password`, `salt`, `hash`) VALUES(?, ?, ?, ?, ?, 'test-salt', 'test-hash');";
 
 			statement = conn.prepareStatement(query);
 			statement.setString(1, username);
