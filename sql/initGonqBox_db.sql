@@ -6,19 +6,19 @@ USE GONQBOX;
 
 CREATE TABLE IF NOT EXISTS `GONQBOX`.`tblUser` (
 	`user_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`username` VARCHAR(20) NOT NULL,
+	`username` VARCHAR(20) NOT NULL UNIQUE,
 	`account_creation_date` DATE NOT NULL,
 	`last_logged_in_date` DATE NOT NULL,
-	`user_mail` VARCHAR(40) NOT NULL,
+	`user_mail` VARCHAR(40) NOT NULL UNIQUE,
 	`password` VARCHAR(255) NULL,
-	`salt` NVARCHAR(128) NULL,
-	`hash` NVARCHAR(128) NULL,
+	`salt` NVARCHAR(128) NOT NULL,
+	`hash` NVARCHAR(128) NOT NULL,
 	PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `GONQBOX`.`tblPermission` (
 	`permission_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`permission_name` VARCHAR(24) NOT NULL,
+	`permission_name` VARCHAR(24) NOT NULL UNIQUE,
 	PRIMARY KEY (`permission_id`)
 ) ENGINE=InnoDB;
 
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `GONQBOX`.`tblFolder` (
 
 CREATE TABLE IF NOT EXISTS `GONQBOX`.`tblFile` (
 	`file_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`name` VARCHAR(255) NOT NULL,
+	`name` VARCHAR(255) NOT NULL UNIQUE,
 	`sequence` VARCHAR(24) NOT NULL,
 	`uploader_id` INT UNSIGNED NOT NULL,
 	`foler_id` INT UNSIGNED NOT NULL,
@@ -53,4 +53,17 @@ CREATE TABLE IF NOT EXISTS `GONQBOX`.`tblCollaborator` (
 	FOREIGN KEY (`user_id`) REFERENCES tblUser(`user_id`) ON DELETE CASCADE,
 	FOREIGN KEY (`file_id`) REFERENCES tblFile(`file_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
+
+INSERT INTO `gonqbox`.`tbluser`(`username`,`account_creation_date`,`last_logged_in_date`,`user_mail`,`password`,`salt`,`hash`)
+VALUES('~Billy',CURDATE(),CURDATE(),'~Billy@mail.com','~test-password','~test-salt','~test-hash');
+
+INSERT INTO `gonqbox`.`tbluser`(`username`,`account_creation_date`,`last_logged_in_date`,`user_mail`,`password`,`salt`,`hash`)
+VALUES('~Sally',CURDATE(),CURDATE(),'~Sally@mail.com','~test-password','~test-salt','~test-hash');
+
+INSERT INTO `gonqbox`.`tbluser`(`username`,`account_creation_date`,`last_logged_in_date`,`user_mail`,`password`,`salt`,`hash`)
+VALUES('~Greg',CURDATE(),CURDATE(),'~Greg@mail.com','~test-password','~test-salt','~test-hash');
+
+INSERT INTO `gonqbox`.`tbluser`(`username`,`account_creation_date`,`last_logged_in_date`,`user_mail`,`password`,`salt`,`hash`)
+VALUES('~Laquisha',CURDATE(),CURDATE(),'~Laquisha@mail.com','~test-password','~test-salt','~test-hash');
+
 
