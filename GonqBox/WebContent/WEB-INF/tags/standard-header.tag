@@ -1,7 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" body-content="empty" %>
 <%@ attribute name="title"  %>
 <!DOCTYPE html>
-<html ondrop='uploadFiles(event)' ondragover='handleDrag(event)'>
+<html ondrop='dropFiles(event)' ondragover='handleDrag(event)'>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title><%= jspContext.getAttribute("title") %></title>
@@ -14,7 +14,13 @@
 	<body>
 		<header>
 			[Logo]
-			<div class="login-register"><a href="/GonqBox/">[login]</a> <a href="/GonqBox/register">[register]</a></div>
-			<div id='uploadList'></div>
+			<div class='login-register'><a href='/GonqBox/'>[login]</a> <a href='/GonqBox/register'>[register]</a></div>
+			<div class='header-upload'>
+				<form action='/GonqBox/upload' method='POST' onsubmit='submitFiles(event)' style='display: inline-block'>
+					<input type='file' id='upload-files' multiple>
+					<input type='submit' value='upload'>
+				</form>
+				<div id='uploadList'></div>
+			</div>
 		</header>
 		<main>

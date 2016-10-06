@@ -3,16 +3,23 @@ function handleDrag(event) {
 	event.preventDefault();
 }
 
-var uploadId = 0;
+var uploadQueue = [];
+var uploadWorkers = 0;
+var maxSimultaneousUploads = 3;
 
-function uploadFiles(event) {
+function dropFiles(event) {
 	event.preventDefault();
+	uploadFiles(event.dataTransfer.files);
+}
 
-	var files = event.dataTransfer.files;
-	var fileQueue = [];
+function submitFiles(event) {
+	event.preventDefault();
+	uploadFiles(document.getElementById('upload-files').files);
+}
+
+function uploadFiles(files) {
 	var fragment = document.createDocumentFragment();
 	for(var i = 0; i < files.length; i++) {
-		var id = uploadId++;
 		var file = files.item(i);
 
 		var nameSpan = document.createElement('span');
@@ -30,34 +37,45 @@ function uploadFiles(event) {
 		div.appendChild(uploadProgress);
 		fragment.appendChild(div);
 
-		fileQueue.push({id: id, file:file, bar: uploadProgress});
+		uploadQueue.push({file:file, bar: uploadProgress});
 	}
+
 	document.getElementById('uploadList').appendChild(fragment);
 
-	sendFiles(fileQueue);
+	while(uploadWorkers < maxSimultaneousUploads && uploadQueue.length) {
+		uploadWorkers++;
+		sendFiles();
+	}
 }
 
-function sendFiles(queue) {
-	if(queue.length < 1)
+function sendFiles() {
+	if(uploadQueue.length < 1) {
+		uploadWorkers--;
 		return;
+	}
 
-	var file = queue.shift();
+	var file = uploadQueue.shift();
 	var req = new XMLHttpRequest();
 
 	req.onreadystatechange = function() {
 		if(req.readyState === XMLHttpRequest.DONE) {
 			file.bar.value = 100;
-			sendFiles(queue);
+			// TODO: change bar class or hide entirely based on status
+			// insert error message?
+			sendFiles();
 		}
 	};
 
 	req.upload.onprogress = function(event) {
-		file.bar.value = event.loaded * 100 / event.total;
+		if(event.lengthComputable)
+			file.bar.value = event.loaded * 100 / event.total;
+		else
+			; // TODO: bar class for "unknown time remaining"
 	};
 
-	req.open('POST', '/GonqBox/upload');
+	req.open('POST', '/GonqBox/upload?ajax=1');
 
 	var form = new FormData();
-	form.append('file', file.file);
+	form.append('upload-files', file.file);
 	req.send(form);
 }

@@ -43,22 +43,25 @@ header .login-register {
 }
 
 #uploadList {
-	display: inline-block;
+	line-height: initial;
 	min-width: 200px;
 	background-color: #ddd;
 	border: 1px solid #bbb;
 	border-radius: 3px;
-	float: right;
 	overflow-y: auto;
 	max-height: 600px;
 }
 
-#uploadList::empty {
+#uploadList:empty {
 	display: none;
 }
 
+.header-upload {
+	display: inline-block;
+	float: right;
+}
+
 .upload-progress {
-	line-height: initial;
 	width: calc(100% - 20px);
 	padding: 10px;
 	border: 0px;
