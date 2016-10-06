@@ -1,12 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GonqBox - Register new account</title>
-</head>
-<body>Already have account, thus do not need to register a new
+<%@ taglib tagdir="/WEB-INF/tags" prefix="gonqbox" %>
+<gonqbox:standard-header title="GonqBox - Register new account" />
+Already have account, thus do not need to register a new
 	one.
-</body>
-</html>
+<gonqbox:standard-footer />
