@@ -30,7 +30,7 @@ public class DAO {
 				String dbName = "gonqbox";
 				String driver = "com.mysql.jdbc.Driver";
 				String userName = "root";
-				String password = "admin";
+				String password = "Basque";
 				Class.forName(driver).newInstance();
 				conn = DriverManager.getConnection(url + dbName, userName, password);
 			} catch (SQLException e) {
