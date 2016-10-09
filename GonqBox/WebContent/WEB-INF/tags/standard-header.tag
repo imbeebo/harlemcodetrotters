@@ -5,10 +5,19 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title><%= jspContext.getAttribute("title") %></title>
-		<link href="style.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" integrity="sha384-2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj" crossorigin="anonymous">
+		<link href="bootstrap-overrides.css" rel="stylesheet">
 	</head>
 	<body>
-		<header>
-			[Logo] <span class="login-register"><a href="/GonqBox/">[login]</a> <a href="/GonqBox/register">[register]</a></span>
-		</header>
-		<main>
+		<nav class="navbar navbar-light bg-faded">
+			<h1 class="navbar-brand m-b-0">GonqBox</h1>
+			<ul class="nav navbar-nav pull-xs-right">
+				<li class="nav-item">
+					<a type="button" class="btn btn-secondary" href="/GonqBox/">Login</a>
+				</li>
+				<li class="nav-item">
+					<a type="button" class="btn btn-secondary" href="/GonqBox/register">Register</a>
+				</li>
+			</ul>
+		</nav>
+		<div class="container m-t-2">
