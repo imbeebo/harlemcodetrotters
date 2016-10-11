@@ -46,6 +46,16 @@ CREATE TABLE IF NOT EXISTS `GONQBOX`.`tblFile` (
 	FOREIGN KEY (`folder_id`) REFERENCES tblFolder(`folder_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+CREATE TABLE IF NOT EXISTS `GONQBOX`.`tblComment` (
+  `comment_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `uploader_id` INT UNSIGNED NOT NULL,
+  `body` text collate utf8_unicode_ci NOT NULL,
+  `dt` timestamp NOT NULL default CURRENT_TIMESTAMP,
+  PRIMARY KEY (`comment_id`),
+  FOREIGN KEY (`uploader_id`) REFERENCES tblUser(`user_id`) ON DELETE CASCADE,
+  FOREIGN KEY (`file_id`) REFERENCES tblUser(`name`) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
 CREATE TABLE IF NOT EXISTS `GONQBOX`.`tblCollaborator` (
 	`collaborator_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`user_id` INT UNSIGNED NOT NULL,

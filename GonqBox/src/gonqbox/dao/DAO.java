@@ -132,4 +132,32 @@ public class DAO {
 	public boolean deleteCollaboratorFromFile(Collaborator toDelete) {
 		return false;
 	}
+	
+	/**
+	 * 
+	 * @param commentToAdd
+	 * @return true on successful addition, false on failure
+	 */
+	public boolean addComment(Comment commentToAdd){
+		try {
+			PreparedStatement statement = null;
+			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+			
+			String query = "INSERT INTO `tblComment` (`comment_id`, "+
+					"`uploader_id`,"+"`body`, "+"`dt`) VALUES(?, ?, ?, ?);";
+
+			statement = conn.prepareStatement(query);
+			statement.setInt(1, commentToAdd.getCommentID());
+			statement.setInt(2, commentToAdd.getUploaderID());
+			statement.setString(3, commentToAdd.getBody());
+			statement.setDate(4, date);
+			statement.executeUpdate();			
+			
+			//execution successful, return true
+			return true;
+		} catch (SQLException e) {
+			System.out.println("Problem with the SQL: " + e);
+			return false;
+		}
+	}
 }
