@@ -1,25 +1,43 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="gonqbox" %>
-<gonqbox:standard-header title="GonqBox Login" />
-	<form action="loginServlet" method="post">
-		<fieldset style="width: 300px">
-			<legend> Login to GonqBox </legend>
-			<table>
-				<tr>
-					<td>User ID</td>
-					<td><input type="text" name="username" required="required" /></td>
-				</tr>
-				<tr>
-					<td>Password</td>
-					<td><input type="password" name="userpass" required="required" /></td>
-				</tr>
-				<tr>
-					<td><input type="submit" value="Login" /></td>
-				</tr>
-			</table>
-		</fieldset>
-	</form>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js" integrity="sha384-THPy051/pYDQGanwU6poAc/hOdQxjnOEXzbT+OuUAFqNqFjL+4IGLBgCJC3ZOShY" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js" integrity="sha384-Plbmg8JY28KFelvJVai01l8WyZzrYWG825m+cZ0eDDS1f7d/js6ikvy1+X+guPIB" crossorigin="anonymous"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/js/bootstrap.min.js" integrity="sha384-VjEeINv9OSwtWFLAtmc4JCtEJXXBub00gtSnszmspDLCtC0I4z4nqz7rEFbIZLLU" crossorigin="anonymous"></script>
+<gonqbox:standard-header title="GonqBox" />
+
+	<%
+		String loginReply = (String)request.getAttribute("error");  
+		if(loginReply != null){
+	%>
+		<div class="row m-t-2">
+			<div class="alert alert-danger" role="alert"><%= loginReply %></div>
+		</div>
+	<%
+		}
+	%>
+
+	<div class="row m-t-2">
+		<div class="col-md-7">
+			<p class="h2">Welcome to GonqBox.</p>
+			<p class="h5 m-t-2">GonqBox is a bilingual online file sharing application.</p>
+			<p class="h5">GonqBox allows you to manage your files within a virtual directory.</p>
+		</div>
+		
+		<div class="col-md-5">
+			<div class="card card-block">
+				<h3 class="card-title">Login</h3>
+				<form action="loginServlet" method="post">
+					<div class="form-group">
+						<input type="text" class="form-control" name="username" required="required" placeholder="username">
+					</div>
+					<div class="form-group">
+					    <input type="password" class="form-control" name="userpass" required="required" placeholder="password">
+					</div>
+					<div class="form-group">
+						<button type="submit" class="btn btn-success">Submit</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	
+	</div>
+	
 <gonqbox:standard-footer />
