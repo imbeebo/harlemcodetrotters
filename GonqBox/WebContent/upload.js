@@ -27,11 +27,11 @@ function uploadFiles(files) {
 		nameSpan.textContent  = file.name;
 
 		var uploadProgress = document.createElement('progress');
-		uploadProgress.className = 'upload-progress-bar';
+		uploadProgress.className = 'progress';
 		uploadProgress.value = 0;
 		uploadProgress.max = 100;
 
-		var div = document.createElement('div');
+		var div = document.createElement('li');
 		div.className = 'upload-progress';
 		div.appendChild(nameSpan);
 		div.appendChild(uploadProgress);
@@ -46,6 +46,8 @@ function uploadFiles(files) {
 		uploadWorkers++;
 		sendFiles();
 	}
+
+	$('#upload-list-dropdown').dropdown('toggle');
 }
 
 function sendFiles() {
@@ -60,8 +62,12 @@ function sendFiles() {
 	req.onreadystatechange = function() {
 		if(req.readyState === XMLHttpRequest.DONE) {
 			file.bar.value = 100;
-			// TODO: change bar class or hide entirely based on status
-			// insert error message?
+
+			if(req.status === 200) {
+				file.bar.className = 'progress progress-success';
+			} else {
+				file.bar.className = 'progress progress-danger';
+			}
 			sendFiles();
 		}
 	};
@@ -78,4 +84,5 @@ function sendFiles() {
 	var form = new FormData();
 	form.append('upload-files', file.file);
 	req.send(form);
+	file.bar.className = 'progress progress-striped progress-animated'
 }
