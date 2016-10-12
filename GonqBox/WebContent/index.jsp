@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="gonqbox" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <gonqbox:standard-header title="GonqBox" />
 
 	<%
@@ -16,9 +17,9 @@
 
 	<div class="row m-t-2">
 		<div class="col-md-7">
-			<p class="h2">Welcome to GonqBox.</p>
-			<p class="h5 m-t-2">GonqBox is a bilingual online file sharing application.</p>
-			<p class="h5">GonqBox allows you to manage your files within a virtual directory.</p>
+			<p class="h2"><fmt:message bundle="${sessionScope.uitranslations}" key="home.welcome" /></p>
+			<p class="h5 m-t-2"><fmt:message bundle="${sessionScope.uitranslations}" key="home.welcome1" /></p>
+			<p class="h5"><fmt:message bundle="${sessionScope.uitranslations}" key="home.welcome2" /></p>
 		</div>
 		
 		<div class="col-md-5">
