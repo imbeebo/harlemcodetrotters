@@ -27,13 +27,13 @@
 				<h3 class="card-title">Login</h3>
 				<form action="loginServlet" method="post">
 					<div class="form-group">
-						<input type="text" class="form-control" name="username" required="required" placeholder="username">
+						<input type="text" class="form-control" name="username" required="required" placeholder="<fmt:message bundle="${sessionScope.uitranslations}" key="username" />">
 					</div>
 					<div class="form-group">
-					    <input type="password" class="form-control" name="userpass" required="required" placeholder="password">
+					    <input type="password" class="form-control" name="userpass" required="required" placeholder="<fmt:message bundle="${sessionScope.uitranslations}" key="password" />">
 					</div>
 					<div class="form-group">
-						<button type="submit" class="btn btn-success">Submit</button>
+						<button type="submit" class="btn btn-success"><fmt:message bundle="${sessionScope.uitranslations}" key="submit" /></button>
 					</div>
 				</form>
 			</div>

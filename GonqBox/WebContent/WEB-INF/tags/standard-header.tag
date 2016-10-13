@@ -23,26 +23,26 @@
 			<h1 class="navbar-brand m-b-0">GonqBox</h1>
 			<ul class="nav navbar-nav pull-xs-right">
 				<li class="nav-item">
-					<a type="button" class="btn btn-secondary" href="/GonqBox/">Login</a>
+					<a type="button" class="btn btn-secondary" href="/GonqBox/"><fmt:message bundle="${sessionScope.uitranslations}" key="login" /></a>
 				</li>
 				<li class="nav-item">
-					<a type="button" class="btn btn-secondary" href="/GonqBox/register">Register</a>
+					<a type="button" class="btn btn-secondary" href="/GonqBox/register"><fmt:message bundle="${sessionScope.uitranslations}" key="register" /></a>
 				</li>
 				<li class="nav-item">
 					<div class="dropdown">
 						<button class="btn btn-default dropdown-toggle" type="button"
 							id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
 							aria-expanded="true">
-							Change Language<span class="caret"></span>
+							<fmt:message bundle="${sessionScope.uitranslations}" key="changeLanguage" /><span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 							<li>
 								<c:url var="engUrl" value=""><c:param name="locale" value="en_CA" /></c:url>
-								<a href="${engUrl}"><img src="resources/icon_flag_Eng.gif" /></a>
+								<a href="${engUrl}"><img src="resources/icon_flag_Eng.gif" /> English</a>
 							</li>
 							<li>
 								<c:url var="frUrl" value="" ><c:param name="locale" value="fr_CA" /></c:url>
-								<a href="${frUrl}"><img src="resources/icon_flag_fr.gif" /></a>
+								<a href="${frUrl}"><img src="resources/icon_flag_fr.gif" /> Français</a>
 							</li>
 						</ul>
 					</div>
