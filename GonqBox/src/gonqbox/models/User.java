@@ -52,5 +52,16 @@ public class User {
 	public void setEmail(String email) {
 		user_email = email;
 	}
+	
+	@Override
+	public String toString(){
+		String string = "";
+		string += "user_id:" 				+ ((Integer)user_id).toString() 	+ "\n"; 
+		string += "username:" 				+ username 							+ "\n"; 
+		string += "account_creation_date:" 	+ account_creation_date.toString() 	+ "\n"; 
+		string += "last_logged_in:" 		+ last_logged_in.toString() 		+ "\n"; 
+		string += "user_email:"				+ user_email 						+ "\n";
+		return string;
+	}
 
 }

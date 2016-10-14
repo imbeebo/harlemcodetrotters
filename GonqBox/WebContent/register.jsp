@@ -5,11 +5,11 @@
 <gonqbox:standard-header title="GonqBox - Register new account" />
 
 	<%
-		String loginReply = (String)request.getAttribute("login_error");  
-		if(loginReply != null){
+		String messengerErr = (String)request.getAttribute("register_messenger_err");  
+		if(messengerErr != null){
 	%>
 		<div class="row m-t-2">
-			<div class="alert alert-danger" role="alert"><%= loginReply %></div>
+			<div class="alert alert-danger" role="alert"><%= messengerErr %></div>
 		</div>
 	<%
 		}
