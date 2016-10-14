@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import gonqbox.models.*;
 
@@ -30,8 +31,9 @@ public class DAO {
 				String url = "jdbc:mysql://localhost:3306/";
 				String dbName = "gonqbox";
 				String driver = "com.mysql.jdbc.Driver";
-				String userName = "root";
-				String password = "Basque";
+				String userName = System.getenv("db.username");
+				String password = System.getenv("db.password");
+				
 				Class.forName(driver).newInstance();
 				conn = DriverManager.getConnection(url + dbName, userName, password);
 			} catch (SQLException e) {
@@ -127,7 +129,7 @@ public class DAO {
 		}
 	}
 
-	public ArrayList<File> getUserFiles(int userId) {
+	public List<File> getUserFiles(int userId) {
 		try {
 			PreparedStatement statement = null;
 			ResultSet rs = null;
@@ -136,13 +138,41 @@ public class DAO {
 			statement = conn.prepareStatement(query);
 			statement.setInt(1, userId);
 			rs = statement.executeQuery();
-			ArrayList<File> files = new ArrayList<>();
+			List<File> files = new ArrayList<>();
 			while (rs.next()) {
 				files.add(new File(rs));
 			}
 			return files;
 		} catch (SQLException e) {
 			System.out.println("Problem with the SQL: " + e);
+			return null;
+		}
+	}
+	
+	public List<File> getFolderFiles(int folderId) {
+		
+		try {
+		
+			String query = "SELECT * FROM tblfile WHERE folder_id = ?";
+			PreparedStatement statement = conn.prepareStatement(query);
+			
+			statement.setInt(1, folderId);
+			
+			ResultSet results = statement.executeQuery();
+			
+			List<File> files = null;
+			if(results.next()){
+				files = new ArrayList<>();
+				results.beforeFirst();
+				while (results.next()) {
+					files.add(new File(results));
+				}
+			}
+			
+			return files;
+			
+		} catch (SQLException e) {
+			System.out.println("Problem with the SQL in method DAO.loginUser: " + e);
 			return null;
 		}
 	}
