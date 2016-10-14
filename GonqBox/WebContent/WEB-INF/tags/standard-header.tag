@@ -16,16 +16,17 @@
 	href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
 <link href="style/bootstrap-overrides.css" rel="stylesheet">
 <script src='upload.js' async></script>
-<c:if test="${ empty sessionScope.loc}">
-	<c:set var="loc" value="en_CA" scope="session" />
-</c:if>
-<c:if test="${not empty param.locale}">
-			  		<c:set var="loc" value="${param.locale}" scope="session" />
-</c:if>
-<fmt:setLocale value="${sessionScope.loc}" scope="session" />
-<fmt:setBundle basename="ui" var="uitranslations" scope="session" />
 </head>
 <body>
+	<c:if test="${ empty sessionScope.loc}">
+		<c:set var="loc" value="en_CA" scope="session" />
+	</c:if>
+	<c:if test="${not empty param.locale}">
+		<c:set var="loc" value="${param.locale}" scope="session" />
+	</c:if>
+	
+	<fmt:setLocale value="${sessionScope.loc}" scope="session" />
+	<fmt:setBundle basename="ui" var="uitranslations" scope="session" />
 	<nav class="navbar navbar-light bg-faded navbar-fixed-top ">
 		<h1 class="navbar-brand m-b-0">GonqBox</h1>
 		<ul class="nav navbar-nav pull-xs-right">
