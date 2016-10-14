@@ -14,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import gonqbox.models.Collaborator;
@@ -26,7 +27,8 @@ public class DAO {
 	private static Connection conn = null;
 	private static DAO dao = new DAO();
 
-	private DAO() {	}
+	private DAO() {
+	}
 
 	public static DAO getInstance() {
 		
@@ -38,7 +40,7 @@ public class DAO {
 				String dbName = "gonqbox";
 				String driver = "com.mysql.jdbc.Driver";
 				String userName = System.getenv("db.username");
-				String password = System.getenv("db.password");;
+				String password = System.getenv("db.password");
 				
 				Class.forName(driver).newInstance();
 				conn = DriverManager.getConnection(url + dbName, userName, password);
@@ -64,11 +66,14 @@ public class DAO {
 
 	/**
 	 * Calls stored procedure to check if valid login, and return user object
+	 * 
 	 * @return User object if valid, otherwise null
 	 */
 	public User loginUser(String username, String password) {
 		
 		try {
+			PreparedStatement statement = null;
+			ResultSet rs = null;
 			
 			String query = "";
 			query += "SELECT ";
@@ -77,14 +82,14 @@ public class DAO {
 			query += "WHERE username = ? ";
 			query += "AND password = ?";
 			
-			PreparedStatement statement = conn.prepareStatement(query);
+			statement = conn.prepareStatement(query);
 			
 			statement.setString(1, username);
 			statement.setString(2, password);
 			
-			ResultSet results = statement.executeQuery();
-			results.first();
-			return new User(results);
+			rs = statement.executeQuery();
+			rs.first();
+			return new User(rs);
 			
 		} catch (SQLException e) {
 			System.out.println("Problem with the SQL in method DAO.loginUser: " + e);
@@ -92,30 +97,34 @@ public class DAO {
 		}
 		
 	}
+
 	/**
 	 * Registers user if there is no conflicting username or email
+	 * 
 	 * @return User object if no conflict, otherwise null
 	 */
 	public User registerUser(String username, String password, String email) {
-		
-		try {			
-			
-			System.out.println(username + password + email);
-			CallableStatement statement = conn.prepareCall("{call gonqbox.spregister(?, ?, ?, ?, ?)}");
-			
+		try {
+			PreparedStatement statement = null;
+			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+
+			String query = "INSERT INTO `tbluser` (`username`, "+
+					"`account_creation_date`, `last_logged_in_date`, "+
+					"`user_mail`, `password`, `salt`, `hash`) VALUES(?, ?, ?, ?, ?, 'test-salt', 'test-hash');";
+
+			statement = conn.prepareStatement(query);
 			statement.setString(1, username);
-			statement.setString(2, email);
-			statement.setString(3, password);
-			statement.setString(4, "test-salt");
-			statement.setString(5, "test-hash");
+			statement.setDate(2, date);
+			statement.setDate(3, date);
+			statement.setString(4, email);
+			statement.setString(5, password);
 			statement.executeUpdate();
 
-			return this.loginUser(username, password);
+			return loginUser(username, password);
 		} catch (SQLException e) {
-			System.out.println("Problem with the SQL in method DAO.registerUser: " + e);
+			System.out.println("Problem with the SQL: " + e);
 			return null;
 		}
-		
 	}
 	
 	public Folder getUserFolder(int userId) {
@@ -170,27 +179,70 @@ public class DAO {
 			return null;
 		}
 	}
+
+	public List<File> getUserFiles(int userId) {
+		try {
+			PreparedStatement statement = null;
+			ResultSet rs = null;
+
+			String query = "SELECT * FROM tblfile WHERE user_id = ? ";
+			statement = conn.prepareStatement(query);
+			statement.setInt(1, userId);
+			rs = statement.executeQuery();
+			List<File> files = new ArrayList<>();
+			while (rs.next()) {
+				files.add(new File(rs));
+			}
+			return files;
+		} catch (SQLException e) {
+			System.out.println("Problem with the SQL: " + e);
+			return null;
+		}
+	}
 	
 	public ArrayList<Permission> getPermissions() {
 		return null;
 	}
-	
+
 	public ArrayList<Collaborator> getCollaboratorsByFile(int fileID) {
 		return null;
 	}
-	
+
 	public ArrayList<Collaborator> getCollaboratorsByUserID(int userID) {
 		return null;
 	}
-	
-	public boolean addFile(File fileToAdd) {
-		return false;
+
+	public boolean addFile(File file) {
+		try {
+			PreparedStatement statement = null;
+			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+
+			String query = "INSERT INTO `tblfile` (`name`, `sequence`, `uploader_id`, `foler_id`, `checksum`, " +
+					"`checksum_date`, `checksum_date_last_verified`) VALUES (?, ?, ?, ?, ?, ?, ?);";
+
+			statement = conn.prepareStatement(query);
+			statement.setString(1, file.getName());
+			statement.setString(2, file.getSequence());
+			statement.setInt(3, file.getUploaderID());
+			statement.setInt(4, file.getFolderID());
+			statement.setString(5, file.getChecksum());
+			statement.setDate(6, file.getChecksumDate());
+			statement.setDate(7, file.getChecksumDateLastChecked());
+			if(statement.executeUpdate() <= 0) {
+				return false;
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Problem with the SQL: " + e);
+			return false;
+		}
+		return true;
 	}
-	
+
 	public boolean addCollaboratorToFile(File fileToShare) {
 		return false;
 	}
-	
+
 	public boolean deleteCollaboratorFromFile(Collaborator toDelete) {
 		return false;
 	}
