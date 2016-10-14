@@ -37,8 +37,8 @@ public class DAO {
 				String url = "jdbc:mysql://localhost:3306/";
 				String dbName = "gonqbox";
 				String driver = "com.mysql.jdbc.Driver";
-				String userName = "root";
-				String password = "admin";
+				String userName = System.getenv("db.username");
+				String password = System.getenv("db.password");;
 				
 				Class.forName(driver).newInstance();
 				conn = DriverManager.getConnection(url + dbName, userName, password);
