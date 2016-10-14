@@ -7,6 +7,7 @@
 
 package gonqbox.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -16,7 +17,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import gonqbox.models.*;
+import gonqbox.models.Collaborator;
+import gonqbox.models.File;
+import gonqbox.models.Folder;
+import gonqbox.models.Permission;
+import gonqbox.models.User;
 
 public class DAO {
 	private static Connection conn = null;
@@ -26,8 +31,11 @@ public class DAO {
 	}
 
 	public static DAO getInstance() {
+		
 		if (conn == null) {
+			
 			try {
+				
 				String url = "jdbc:mysql://localhost:3306/";
 				String dbName = "gonqbox";
 				String driver = "com.mysql.jdbc.Driver";
@@ -36,11 +44,12 @@ public class DAO {
 				
 				Class.forName(driver).newInstance();
 				conn = DriverManager.getConnection(url + dbName, userName, password);
+			
 			} catch (SQLException e) {
 				System.out.println("SQL Exception: " + e);
 				return null;
 			} catch (InstantiationException e) {
-				System.out.println("Could not instansiate: " + e);
+				System.out.println("Could not instantiate: " + e);
 				return null;
 			} catch (IllegalAccessException e) {
 				System.out.println("Cannot access: " + e);
@@ -50,7 +59,9 @@ public class DAO {
 				return null;
 			}
 		}
+		
 		return dao;
+		
 	}
 
 	/**
@@ -59,25 +70,32 @@ public class DAO {
 	 * @return User object if valid, otherwise null
 	 */
 	public User loginUser(String username, String password) {
+		
 		try {
 			PreparedStatement statement = null;
 			ResultSet rs = null;
-
-			String query = "SELECT user_id, username, account_creation_date, "
-					+ "last_logged_in, user_email FROM tbluser WHERE username = ? " + "AND password = ?";
+			
+			String query = "";
+			query += "SELECT ";
+			query += "user_id, username, account_creation_date, last_logged_in_date, user_mail ";
+			query += "FROM tbluser ";
+			query += "WHERE username = ? ";
+			query += "AND password = ?";
+			
 			statement = conn.prepareStatement(query);
+			
 			statement.setString(1, username);
 			statement.setString(2, password);
+			
 			rs = statement.executeQuery();
-			User currentUser = null;
-			while (rs.next()) {
-				currentUser = new User(rs);
-			}
-			return currentUser;
+			rs.first();
+			return new User(rs);
+			
 		} catch (SQLException e) {
-			System.out.println("Problem with the SQL: " + e);
+			System.out.println("Problem with the SQL in method DAO.loginUser: " + e);
 			return null;
 		}
+		
 	}
 
 	/**
@@ -108,45 +126,30 @@ public class DAO {
 			return null;
 		}
 	}
-
+	
 	public Folder getUserFolder(int userId) {
+		
 		try {
-			PreparedStatement statement = null;
-			ResultSet rs = null;
+			
+			String query = "";
+			query += "SELECT ";
+			query += "folder_id, owner_id, folder_size, file_count ";
+			query += "FROM tblfolder ";
+			query += "WHERE owner_id = ?";
 
-			String query = "SELECT * FROM tblfolder WHERE user_id = ? ";
-			statement = conn.prepareStatement(query);
+			PreparedStatement statement = conn.prepareStatement(query);
+			
 			statement.setInt(1, userId);
-			rs = statement.executeQuery();
-			Folder userFolder = null;
-			while (rs.next()) {
-				userFolder = new Folder(rs);
-			}
-			return userFolder;
+			
+			ResultSet results = statement.executeQuery();
+			results.first();
+			return new Folder(results);
+			
 		} catch (SQLException e) {
-			System.out.println("Problem with the SQL: " + e);
+			System.out.println("Problem with the SQL in method DAO.getUserFolder: " + e);
 			return null;
 		}
-	}
-
-	public List<File> getUserFiles(int userId) {
-		try {
-			PreparedStatement statement = null;
-			ResultSet rs = null;
-
-			String query = "SELECT * FROM tblfile WHERE user_id = ? ";
-			statement = conn.prepareStatement(query);
-			statement.setInt(1, userId);
-			rs = statement.executeQuery();
-			List<File> files = new ArrayList<>();
-			while (rs.next()) {
-				files.add(new File(rs));
-			}
-			return files;
-		} catch (SQLException e) {
-			System.out.println("Problem with the SQL: " + e);
-			return null;
-		}
+		
 	}
 	
 	public List<File> getFolderFiles(int folderId) {
@@ -177,7 +180,27 @@ public class DAO {
 		}
 	}
 
-	public ArrayList<Permissions> getPermissions() {
+	public List<File> getUserFiles(int userId) {
+		try {
+			PreparedStatement statement = null;
+			ResultSet rs = null;
+
+			String query = "SELECT * FROM tblfile WHERE user_id = ? ";
+			statement = conn.prepareStatement(query);
+			statement.setInt(1, userId);
+			rs = statement.executeQuery();
+			List<File> files = new ArrayList<>();
+			while (rs.next()) {
+				files.add(new File(rs));
+			}
+			return files;
+		} catch (SQLException e) {
+			System.out.println("Problem with the SQL: " + e);
+			return null;
+		}
+	}
+	
+	public ArrayList<Permission> getPermissions() {
 		return null;
 	}
 
