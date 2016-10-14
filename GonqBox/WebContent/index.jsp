@@ -24,7 +24,7 @@
 		
 		<div class="col-md-5">
 			<div class="card card-block">
-				<h3 class="card-title">Login</h3>
+				<h3 class="card-title"><fmt:message bundle="${sessionScope.uitranslations}" key="login" /></h3>
 				<form action="loginServlet" method="post">
 					<div class="form-group">
 						<input type="text" class="form-control" name="username" required="required" placeholder="<fmt:message bundle="${sessionScope.uitranslations}" key="username" />">
