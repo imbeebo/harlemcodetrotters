@@ -31,7 +31,7 @@ public class DAO {
 				String dbName = "gonqbox";
 				String driver = "com.mysql.jdbc.Driver";
 				String userName = "root";
-				String password = "admin";
+				String password = "Basque";
 				Class.forName(driver).newInstance();
 				conn = DriverManager.getConnection(url + dbName, userName, password);
 			} catch (SQLException e) {
@@ -88,8 +88,9 @@ public class DAO {
 			PreparedStatement statement = null;
 			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 
-			String query = "INSERT INTO `tbluser` (`username`, " + "`account_creation_date`, `last_logged_in_date`, "
-					+ "`user_mail`, `password`) VALUES(?, ?, ?, ?, ?);";
+			String query = "INSERT INTO `tbluser` (`username`, "+
+					"`account_creation_date`, `last_logged_in_date`, "+
+					"`user_mail`, `password`, `salt`, `hash`) VALUES(?, ?, ?, ?, ?, 'test-salt', 'test-hash');";
 
 			statement = conn.prepareStatement(query);
 			statement.setString(1, username);

@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import gonqbox.dao.DAO;
 import gonqbox.models.User;
@@ -18,7 +19,7 @@ public class RegisterServlet extends HttpServlet {
 	private static final String
 		REGISTER_PAGE				= "register.jsp",
 		ALREADY_REGISTERED_PAGE		= "already-registered.jsp",
-		REGISTER_SUCCESS_PAGE		= "registration-complete.jsp";
+		REGISTER_SUCCESS_PAGE		= "welcome.jsp";
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -55,6 +56,7 @@ public class RegisterServlet extends HttpServlet {
 			String username = req.getParameter("username");
 			String email = req.getParameter("email-address");
 			String password = req.getParameter("userpass");
+			User u = null;
 
 			String error = check_username(username);
 
@@ -66,7 +68,7 @@ public class RegisterServlet extends HttpServlet {
 
 			if(error == null)
 			{
-				User u = DAO.getInstance().registerUser(username, password, email);
+				u = DAO.getInstance().registerUser(username, password, email);
 
 				if(u == null)
 					error = "Username or email already in use.";
@@ -81,6 +83,9 @@ public class RegisterServlet extends HttpServlet {
 			}
 			else
 			{
+				HttpSession session = req.getSession(false);
+		        if(session!=null)
+		        session.setAttribute("name", u.getUsername());
 				req.getRequestDispatcher(REGISTER_SUCCESS_PAGE).forward(req, resp);
 			}
 		}
