@@ -79,11 +79,12 @@
 					<ul class='dropdown-menu open' id='uploadList'>
 					</ul>
 				</div>
-				<label class='form-control btn btn-secondary'>Select
-					Files...<input type='file' id='upload-files' multiple
+				<label class='form-control btn btn-secondary'><fmt:message bundle="${sessionScope.uitranslations}"
+							key="selectFiles" />...<input type='file' id='upload-files' multiple
 					style='display: none'>
 				</label> <span class="input-group-btn"> <input type='submit'
-					value='upload' class='btn btn-secondary'>
+					value='<fmt:message bundle="${sessionScope.uitranslations}"
+							key="upload" />' class='btn btn-secondary'>
 				</span>
 			</div>
 		</form>
