@@ -4,11 +4,25 @@
 <gonqbox:standard-header title="GonqBox" />
 
 	<%
-		String loginReply = (String)request.getAttribute("error");  
-		if(loginReply != null){
+		String messengerErr = (String)request.getAttribute("login_messenger_err");  
+		String messenger = (String)request.getAttribute("login_messenger");  
+	%>
+
+	<%
+		if(messengerErr != null){
 	%>
 		<div class="row m-t-2">
-			<div class="alert alert-danger" role="alert"><%= loginReply %></div>
+			<div class="alert alert-danger" role="alert"><%= messengerErr %></div>
+		</div>
+	<%
+		}
+	%>
+	
+	<%
+		if(messenger != null){
+	%>
+		<div class="row m-t-2">
+			<div class="alert alert-success" role="alert"><%= messenger %></div>
 		</div>
 	<%
 		}
@@ -29,7 +43,7 @@
 						<input type="text" class="form-control" name="username" required="required" placeholder="username">
 					</div>
 					<div class="form-group">
-					    <input type="password" class="form-control" name="userpass" required="required" placeholder="password">
+					    <input type="password" class="form-control" name="password" required="required" placeholder="password">
 					</div>
 					<div class="form-group">
 						<button type="submit" class="btn btn-success">Submit</button>
