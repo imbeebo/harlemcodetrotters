@@ -8,11 +8,11 @@ package gonqbox.models;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Permissions {
+public class Permission {
 	private int permission_id;
 	private String permission_name;
 
-	public Permissions(ResultSet rs) throws SQLException {
+	public Permission(ResultSet rs) throws SQLException {
 		processRow(rs);
 	}
 	

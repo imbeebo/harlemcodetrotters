@@ -4,11 +4,11 @@
 <gonqbox:standard-header title="GonqBox - Register new account" />
 
 	<%
-		String loginReply = (String)request.getAttribute("login_error");  
-		if(loginReply != null){
+		String messengerErr = (String)request.getAttribute("register_messenger_err");  
+		if(messengerErr != null){
 	%>
 		<div class="row m-t-2">
-			<div class="alert alert-danger" role="alert"><%= loginReply %></div>
+			<div class="alert alert-danger" role="alert"><%= messengerErr %></div>
 		</div>
 	<%
 		}
@@ -23,10 +23,10 @@
 						<input type="text" class="form-control" name="username" required="required" placeholder="username">
 					</div>
 					<div class="form-group">
-						<input type="email" class="form-control" name="email-address" required="required" placeholder="email">
+						<input type="email" class="form-control" name="email" required="required" placeholder="email">
 					</div>
 					<div class="form-group">
-					    <input type="password" class="form-control" name="userpass" required="required" placeholder="password">
+					    <input type="password" class="form-control" name="password" required="required" placeholder="password">
 					</div>
 					<div class="form-group">
 						<button type="submit" class="btn btn-success">Submit</button>

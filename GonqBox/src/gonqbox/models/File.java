@@ -9,26 +9,28 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class File {
-	private int file_id;
+	private int fileId;
 	private String name;
 	private String sequence;
-	private int uploader_id;
-	private int folder_id;
+	private int uploaderId;
+	private int folderId;
+	private int fileSize;
 
 	public File(ResultSet rs) throws SQLException {
 		processRow(rs);
 	}
 	
 	public void processRow(ResultSet rs) throws SQLException {
-		file_id = rs.getInt("file_id");
+		fileId = rs.getInt("file_id");
 		name = rs.getString("name");
 		sequence = rs.getString("sequence");
-		uploader_id = rs.getInt("uploader_id");
-		folder_id = rs.getInt("folder_id");
+		uploaderId = rs.getInt("uploader_id");
+		folderId = rs.getInt("folder_id");
+		fileSize = rs.getInt("file_size");
 	}
 
 	public int getFileID() {
-		return file_id;
+		return fileId;
 	}
 	
 	public String getName() {
@@ -39,11 +41,28 @@ public class File {
 		return sequence;
 	}
 	
+	public int getFileSize() {
+		return fileSize;
+	}
+	
 	public int getUploaderID() {
-		return uploader_id;
+		return uploaderId;
 	}
 	
 	public int getFolderID() {
-		return folder_id;
+		return folderId;
 	}
+	
+	@Override
+	public String toString(){
+		String string = "";
+		string += "fileId:" 		+ ((Integer)fileId).toString() 		+ "\n"; 
+		string += "name:" 			+ name 								+ "\n"; 
+		string += "sequence:" 		+ sequence							+ "\n"; 
+		string += "uploaderId:" 	+ ((Integer)uploaderId).toString()	+ "\n"; 
+		string += "folderId:"		+ ((Integer)folderId).toString()	+ "\n";
+		string += "fileSize:"		+ ((Integer)fileSize).toString()	+ "\n";
+		return string;
+	}
+
 }
