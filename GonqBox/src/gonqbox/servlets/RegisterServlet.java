@@ -7,6 +7,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.jstl.core.Config;
+
+import java.util.ResourceBundle;
 
 import gonqbox.Pages;
 import gonqbox.dao.DAO;
@@ -15,14 +18,16 @@ import gonqbox.models.User;
 @WebServlet(name = "register", urlPatterns = { "/register" })
 public class RegisterServlet extends HttpServlet {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 574793718574570024L;
+	private ResourceBundle bundle = null;
 
-	/**
-	 * 
-	 */
+
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse responce) throws ServletException, IOException {
 
+    	String loc = Config.get(request.getSession(), Config.FMT_LOCALE).toString();
+    	bundle = ResourceBundle.getBundle("ui_"+loc);
+    	
 		String registerError = null;
 		boolean registerSuccess = false;
 		boolean validParams = true;
@@ -51,7 +56,7 @@ public class RegisterServlet extends HttpServlet {
 				validParams = false;
 			}
 		*/
-						
+			
 			if(validParams){
 				user = DAO.getInstance().registerUser(username, password, email);
 				if(user != null) registerSuccess = true;
@@ -65,18 +70,19 @@ public class RegisterServlet extends HttpServlet {
 				request.getRequestDispatcher(Pages.REGISTER_PAGE.toString()).include(request, responce);
 			}
 		}else{
-        	request.setAttribute("register_messenger_err", "You are already logged in.");
+        	request.setAttribute("register_messenger_err", bundle.getObject("alreadyLoggedIn"));
 			request.getRequestDispatcher(Pages.REGISTER_PAGE.toString()).include(request, responce);
 		}
 	}
 	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse responce) throws ServletException, IOException {
-		
+		if(bundle == null)
+			bundle = (ResourceBundle)request.getSession().getAttribute("uitranslations");
 		User user = (User)request.getSession().getAttribute("user");
 
 		if (user != null){
-        	request.setAttribute("login_messenger_err", "You are already logged in.");
+        	request.setAttribute("login_messenger_err", bundle.getObject("alreadyLoggedIn"));
 			request.getRequestDispatcher(Pages.INDEX.toString()).forward(request, responce);
 		}else{
 			request.setAttribute("username", "");
@@ -84,5 +90,5 @@ public class RegisterServlet extends HttpServlet {
 			request.setAttribute("login_error", null);
 			request.getRequestDispatcher(Pages.REGISTER_PAGE.toString()).forward(request, responce);
 		}
-}	
+	}	
 }
