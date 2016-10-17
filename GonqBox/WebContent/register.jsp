@@ -1,37 +1,40 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GonqBox - Register new account</title>
-<link href="style.css" rel="stylesheet">
-</head>
-<body>
-	<form action="register" method="post">
-		<fieldset style="width: 300px">
-			<legend> Register </legend>
-			<% if(request.getAttribute("login_error") != null) { %>
-			<div class="registration-error"><%= request.getAttribute("login_error") %></div>
-			<% } %>
-			<table>
-				<tr>
-					<td>Username</td>
-					<td><input type="text" name="username" required="required" value="<%= request.getAttribute("username") %>" /></td>
-				</tr>
-				<tr>
-					<td>EMail Address</td>
-					<td><input type="text" name="email-address" required="required" value="<%= request.getAttribute("email_address") %>" /></td>
-				</tr>
-				<tr>
-					<td>Password</td>
-					<td><input type="password" name="userpass" required="required" /></td>
-				</tr>
-				<tr>
-					<td><input type="submit" value="Register" /></td>
-				</tr>
-			</table>
-		</fieldset>
-	</form>
-</body>
-</html>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="gonqbox" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<gonqbox:standard-header title="GonqBox - Register new account" />
+
+	<%
+		String messengerErr = (String)request.getAttribute("register_messenger_err");  
+		if(messengerErr != null){
+	%>
+		<div class="row m-t-2">
+			<div class="alert alert-danger" role="alert"><%= messengerErr %></div>
+		</div>
+	<%
+		}
+	%>
+
+	<div class="row m-t-2">
+		<div class="col-md-7">
+			<div class="card card-block">
+				<h3 class="card-title"><fmt:message bundle="${sessionScope.uitranslations}" key="register" /></h3>
+				<form action="register" method="post">
+					<div class="form-group">
+						<input type="text" class="form-control" name="username" required="required" placeholder="<fmt:message bundle="${sessionScope.uitranslations}" key="username" />">
+					</div>
+					<div class="form-group">
+						<input type="email" class="form-control" name="email-address" required="required" placeholder="<fmt:message bundle="${sessionScope.uitranslations}" key="email" />">
+					</div>
+					<div class="form-group">
+					    <input type="password" class="form-control" name="userpass" required="required" placeholder="<fmt:message bundle="${sessionScope.uitranslations}" key="password" />">
+					</div>
+					<div class="form-group">
+						<button type="submit" class="btn btn-success"><fmt:message bundle="${sessionScope.uitranslations}" key="submit" /></button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>	
+	
+<gonqbox:standard-footer />
