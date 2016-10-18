@@ -4,8 +4,8 @@
 <gonqbox:standard-header title="GonqBox" />
 
 	<%
-		String messengerErr = (String)request.getAttribute("login_messenger_err");  
-		String messenger = (String)request.getAttribute("login_messenger");  
+		String messenger = (String)request.getAttribute("index_messenger");  
+		String messengerErr = (String)request.getAttribute("index_messenger_err");  
 	%>
 
 	<%

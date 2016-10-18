@@ -16,7 +16,8 @@
 </head>
 <body>
 	<nav class="navbar navbar-light bg-faded">
-		<h1 class="navbar-brand m-b-0">GonqBox</h1>
+	<div class="container">
+		<a class="navbar-brand m-b-0" href="/GonqBox/">GonqBox</a>
 		<%
 			if (session.getAttribute("user") == null) {
 		%>
@@ -28,10 +29,16 @@
 		</ul>
 		<%
 			} else {
-		%>
-		<ul class="nav navbar-nav pull-xs-right">
-			<li class="nav-item"><a type="button" class="btn btn-secondary"
-				href="/GonqBox/folder">My Folder</a></li>
+		%>		
+		<ul class="nav navbar-nav pull-xs-right m-l-2">
+			<li class="nav-item dropdown pull-left">
+				<a class="nav-link dropdown-toggle pull-left" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Profile</a>
+				<div class="dropdown-menu pull-left">
+					<a class="dropdown-item" href="/GonqBox/folder">My Folder</a>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href="/GonqBox/logout">Log Out</a>
+				</div>
+			</li>
 		</ul>
 
 		<form class='navbar-form pull-xs-right' action='/GonqBox/upload'
@@ -56,5 +63,6 @@
 		<%
 			}
 		%>
+	</div>
 	</nav>
 	<div class="container m-t-2">

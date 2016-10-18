@@ -43,9 +43,9 @@ public class LoginServlet extends HttpServlet{
         //check if user found
         if(user != null){
         	request.getSession().setAttribute("user", user);
-        	request.setAttribute("login_messenger","Login Successful, welcome " + user.getUsername());
+        	request.setAttribute("index_messenger","Login Successful, welcome " + user.getUsername());
         } else {
-        	request.setAttribute("login_messenger_err","Invalid Username or Password");
+        	request.setAttribute("index_messenger_err","Invalid Username or Password");
         }
         
     	request.getRequestDispatcher(Pages.INDEX.toString()).forward(request,response);
