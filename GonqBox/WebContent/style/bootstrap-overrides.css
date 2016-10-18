@@ -1,0 +1,70 @@
+.bg-faded {
+    background-color: #C8D7D1;
+}
+
+body{
+	background-color: #F9F9F9;
+}
+
+#uploadList {
+	padding: 0px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	min-width: 160px;
+	max-width: 240px;
+	width: auto;
+}
+
+@media screen and (min-height: 320px) {
+	#uploadList {
+		max-height: 220px;
+	}
+}
+
+@media screen and (min-height: 480px) {
+	#uploadList {
+		max-height: 380px;
+	}
+}
+
+@media screen and (min-height: 600px) {
+	#uploadList {
+		max-height: 500px;
+	}
+}
+
+@media screen and (min-height: 720px) {
+	#uploadList {
+		max-height: 620px;
+	}
+}
+
+@media screen and (min-height: 900px) {
+	#uploadList {
+		max-height: 800px;
+	}
+}
+
+@media screen and (min-height: 1024px) {
+	#uploadList {
+		max-height: 920px;
+	}
+}
+
+.upload-progress {
+	padding: 0px 2px 5px;
+	border-top: 2px solid #888;
+	background-color: #dde;
+}
+
+.upload-progress:nth-child(2n) {
+	background-color: #cdc;
+}
+
+.upload-progress:first-child {
+	border-top: 0px;
+}
+
+.upload-progress .progress {
+	margin-bottom: 0px;
+}
