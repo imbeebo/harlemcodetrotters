@@ -4,10 +4,6 @@
     <servlet-name>login</servlet-name>
     <servlet-class>gonqbox.servlets.LoginServlet</servlet-class>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>login</servlet-name>
-    <url-pattern>/loginServlet</url-pattern>
-  </servlet-mapping>
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
