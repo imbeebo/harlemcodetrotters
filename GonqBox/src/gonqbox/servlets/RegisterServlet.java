@@ -58,7 +58,6 @@ public class RegisterServlet extends HttpServlet {
 			}
 			
 			if(registerSuccess){
-				System.out.println("registerSuccess");
 				request.getSession().setAttribute("user", user);
 				request.setAttribute("index_messenger","Registration Successful, welcome " + user.getUsername());
 				request.getRequestDispatcher(Pages.INDEX.toString()).forward(request, responce);

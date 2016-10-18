@@ -29,7 +29,8 @@
 		</ul>
 		<%
 			} else {
-		%>		
+		%>
+		
 		<ul class="nav navbar-nav pull-xs-right m-l-2">
 			<li class="nav-item dropdown pull-left">
 				<a class="nav-link dropdown-toggle pull-left" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Profile</a>
