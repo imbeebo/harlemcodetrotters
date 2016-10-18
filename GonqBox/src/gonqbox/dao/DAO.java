@@ -18,6 +18,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import gonqbox.models.Collaborator;
+import gonqbox.models.Comment;
 import gonqbox.models.File;
 import gonqbox.models.Folder;
 import gonqbox.models.Permission;
@@ -35,7 +36,6 @@ public class DAO {
 		if (conn == null) {
 			
 			try {
-				
 				String url = "jdbc:mysql://localhost:3306/";
 				String dbName = "gonqbox";
 				String driver = "com.mysql.jdbc.Driver";
