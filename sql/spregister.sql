@@ -1,4 +1,3 @@
-SELECT * FROM gonqbox.tbluser;
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spregister`(
 	IN _username	VARCHAR(20),
