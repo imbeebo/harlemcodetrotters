@@ -24,19 +24,23 @@ public class FolderServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 		
 		User user = (User)req.getSession().getAttribute("user");
-		
-		Folder folder = dao.getUserFolder(user.getUserID());
-				
-		if(user != null && folder != null){
-			req.setAttribute("folder_owner", user.getUsername());
-			req.setAttribute("folder_file_count", folder.getFileCount());
-			req.setAttribute("folder_size", folder.getSize());
+		if(user != null){
+			Folder folder = dao.getUserFolder(user.getUserID());
+					
+			if(folder != null){
+				req.setAttribute("folder_owner", user.getUsername());
+				req.setAttribute("folder_file_count", folder.getFileCount());
+				req.setAttribute("folder_size", folder.getSize());
+			}
+			req.setAttribute("files", dao.getFolderFiles(folder.getFolderID()));
+			
+	        RequestDispatcher rd=req.getRequestDispatcher(Pages.FOLDER.toString());  
+	        rd.forward(req,resp);  
+		}else{
+			req.setAttribute("index_messenger_err","Unable to fetch user from session");
+	        RequestDispatcher rd=req.getRequestDispatcher(Pages.INDEX.toString());  
+	        rd.forward(req,resp);  
 		}
-		req.setAttribute("files", dao.getFolderFiles(folder.getFolderID()));
-		
-        RequestDispatcher rd=req.getRequestDispatcher(Pages.FOLDER.toString());  
-        rd.forward(req,resp);  
-
 	}
 	
 }

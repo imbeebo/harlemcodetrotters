@@ -64,6 +64,7 @@ public class RegisterServlet extends HttpServlet {
 			
 			if(registerSuccess){
 				request.getSession().setAttribute("user", user);
+				request.setAttribute("index_messenger","Registration Successful, welcome " + user.getUsername());
 				request.getRequestDispatcher(Pages.INDEX.toString()).forward(request, responce);
 			}else{
 	        	request.setAttribute("register_messenger_err", registerError);
@@ -82,7 +83,7 @@ public class RegisterServlet extends HttpServlet {
 		User user = (User)request.getSession().getAttribute("user");
 
 		if (user != null){
-        	request.setAttribute("login_messenger_err", bundle.getObject("alreadyLoggedIn"));
+        	request.setAttribute("index_messenger_err", bundle.getObject("alreadyLoggedIn"));
 			request.getRequestDispatcher(Pages.INDEX.toString()).forward(request, responce);
 		}else{
 			request.setAttribute("username", "");
