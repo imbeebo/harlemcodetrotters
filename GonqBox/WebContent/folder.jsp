@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="gonqbox" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <gonqbox:standard-header title="Folder" />
 
 <%@ page import="java.util.List" %>
@@ -28,10 +29,10 @@
 			<% if(files != null){ %>
 				<table class="table table-sm table-hover dataTable nowrap order-column" data-page-length='25'>
 					<thead>
-						<th>File</th>
-						<th>Size</th>
-						<th>Uploader</th>
-						<th>Upload Date</th>
+						<th><fmt:message bundle="${sessionScope.uitranslations}" key="file" /></th>
+						<th><fmt:message bundle="${sessionScope.uitranslations}" key="size" /></th>
+						<th><fmt:message bundle="${sessionScope.uitranslations}" key="owner" /></th>
+						<th><fmt:message bundle="${sessionScope.uitranslations}" key="uploadDate" /></th>
 						<th>Actions</th>
 					</thead>
 					<tbody>
