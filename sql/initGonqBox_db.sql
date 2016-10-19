@@ -97,9 +97,9 @@ VALUES(4,0,0);
 INSERT INTO `gonqbox`.`tblfile`(`name`,`file_size`,`sequence`,`uploader_id`,`folder_id`,`checksum`,`checksum_date`,`checksum_date_last_verified`)
 VALUES('cat.jpg','200','sequence',3,3,'checksum',CURDATE(),CURDATE());
 INSERT INTO `gonqbox`.`tblfile`(`name`,`file_size`,`sequence`,`uploader_id`,`folder_id`,`checksum`,`checksum_date`,`checksum_date_last_verified`)
-VALUES('not_porn.png','600','sequence',1,1,'checksum',CURDATE(),CURDATE());
+VALUES('two_cats.png','600','sequence',1,1,'checksum',CURDATE(),CURDATE());
 INSERT INTO `gonqbox`.`tblfile`(`name`,`file_size`,`sequence`,`uploader_id`,`folder_id`,`checksum`,`checksum_date`,`checksum_date_last_verified`)
-VALUES('porn.webm','200','sequence',2,1,'checksum',CURDATE(),CURDATE());
+VALUES('dog.webm','200','sequence',2,1,'checksum',CURDATE(),CURDATE());
 
 /*tblCollaborator Test Data*/
 
