@@ -31,8 +31,8 @@ public class RegisterServlet extends HttpServlet {
 		if(user == null){
 			
 			String username = request.getParameter("username");
-			String email = request.getParameter("email");
-			String password = request.getParameter("password");
+			String email = request.getParameter("email-address");
+			String password = request.getParameter("userpass");
 			
 			// validation
 		/*
