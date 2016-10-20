@@ -275,4 +275,8 @@ public class DAO {
 			return false;
 		}
 	}
+
+	public ArrayList<Comment> getCommentsByFileID(int fileID) {
+		return null;
+	}
 }

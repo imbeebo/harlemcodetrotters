@@ -43,8 +43,8 @@ public class File {
 		uploader_id = rs.getInt("uploader_id");
 		folder_id = rs.getInt("folder_id");
 		checksum = rs.getString("checksum");
-		checksumDate = rs.getDate("checksumDate");
-		checksumDateLastChecked = rs.getDate("checksumDateLastChecked");
+		checksumDate = rs.getDate("checksum_date");
+		checksumDateLastChecked = rs.getDate("checksum_date_last_verified");
 		fileSize = rs.getInt("file_size");
 	}
 
