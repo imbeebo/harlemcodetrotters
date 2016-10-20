@@ -64,7 +64,7 @@ public class RegisterServlet extends HttpServlet {
 			
 			if(registerSuccess){
 				request.getSession().setAttribute("user", user);
-				request.setAttribute("index_messenger","Registration Successful, welcome " + user.getUsername());
+				request.setAttribute("index_messenger",bundle.getObject("goodRegistration") + user.getUsername());
 				request.getRequestDispatcher(Pages.INDEX.toString()).forward(request, responce);
 			}else{
 	        	request.setAttribute("register_messenger_err", registerError);
