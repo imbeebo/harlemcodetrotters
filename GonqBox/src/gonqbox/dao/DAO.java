@@ -69,8 +69,8 @@ public class DAO {
 	 * 
 	 * @return User object if valid, otherwise null
 	 */
-	public User loginUser(String username, String password) {
-		
+	public User loginUser(User user) {
+		if(null == user) throw new NullPointerException("User object is null.");
 		try {
 			PreparedStatement statement = null;
 			ResultSet rs = null;
@@ -84,8 +84,8 @@ public class DAO {
 			
 			statement = conn.prepareStatement(query);
 			
-			statement.setString(1, username);
-			statement.setString(2, password);
+			statement.setString(1, user.getUsername());
+			statement.setString(2, user.getPassword());
 			
 			rs = statement.executeQuery();
 			rs.first();
@@ -103,7 +103,8 @@ public class DAO {
 	 * 
 	 * @return User object if no conflict, otherwise null
 	 */
-	public User registerUser(String username, String password, String email) {
+	public User registerUser(User user) {
+		if(null == user) throw new NullPointerException("User object is null.");
 		try {
 			PreparedStatement statement = null;
 			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
@@ -113,14 +114,14 @@ public class DAO {
 					"`user_mail`, `password`, `salt`, `hash`) VALUES(?, ?, ?, ?, ?, 'test-salt', 'test-hash');";
 
 			statement = conn.prepareStatement(query);
-			statement.setString(1, username);
+			statement.setString(1, user.getUsername());
 			statement.setDate(2, date);
 			statement.setDate(3, date);
-			statement.setString(4, email);
-			statement.setString(5, password);
+			statement.setString(4, user.getEmail());
+			statement.setString(5, user.getPassword());
 			statement.executeUpdate();
 
-			return loginUser(username, password);
+			return loginUser(user);
 		} catch (SQLException e) {
 			System.out.println("Problem with the SQL: " + e);
 			return null;

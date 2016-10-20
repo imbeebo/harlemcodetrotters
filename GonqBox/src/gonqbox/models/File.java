@@ -19,6 +19,18 @@ public class File {
 	private Date checksumDate;
 	private Date checksumDateLastChecked;
 	private int fileSize;
+	
+	public File(String name, String sequence, int uploader_id, int folder_id, String checksum,
+			Date checksumDate, Date checksumDateLastChecked, int fileSize) {
+		this.name = name;
+		this.sequence = sequence;
+		this.uploader_id = uploader_id;
+		this.folder_id = folder_id;
+		this.checksum = checksum;
+		this.checksumDate = checksumDate;
+		this.checksumDateLastChecked = checksumDateLastChecked;
+		this.fileSize = fileSize;
+	}
 
 	public File(ResultSet rs) throws SQLException {
 		processRow(rs);
