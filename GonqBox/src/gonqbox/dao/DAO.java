@@ -7,7 +7,6 @@
 
 package gonqbox.dao;
 
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -121,10 +120,30 @@ public class DAO {
 			statement.setString(5, user.getPassword());
 			statement.executeUpdate();
 
-			return loginUser(user);
+			User newUser = loginUser(user);
+			createUserFolder(newUser);
+			return newUser;
 		} catch (SQLException e) {
 			System.out.println("Problem with the SQL: " + e);
 			return null;
+		}
+	}
+	
+	private void createUserFolder(User user) {
+		if(null == user) throw new NullPointerException("User object is null.");
+		try {
+			PreparedStatement statement = null;
+
+			String query = "INSERT INTO `tblfolder` (`owner_id`, "+
+					"`folder_size`, `file_count`) "+
+					"VALUES(?, 0, 0);";
+
+			statement = conn.prepareStatement(query);
+			statement.setInt(1, user.getUserID());
+			statement.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println("Problem with the SQL: " + e);
 		}
 	}
 	

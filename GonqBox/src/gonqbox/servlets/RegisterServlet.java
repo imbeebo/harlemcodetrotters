@@ -78,8 +78,9 @@ public class RegisterServlet extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse responce) throws ServletException, IOException {
-		if(bundle == null)
-			bundle = (ResourceBundle)request.getSession().getAttribute("uitranslations");
+    	String loc = Config.get(request.getSession(), Config.FMT_LOCALE).toString();
+    	bundle = ResourceBundle.getBundle("ui_"+loc);
+    	
 		User user = (User)request.getSession().getAttribute("user");
 
 		if (user != null){
