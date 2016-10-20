@@ -14,6 +14,13 @@ public class Comment {
 	private int uploader_id;
 	private int file_id;
 
+	public Comment(String body, int uploader_id, int file_id) {
+		if(null == body) throw new NullPointerException("Comment cannot be null");
+		this.body = body;
+		this.uploader_id = uploader_id;
+		this.file_id = file_id;
+	}
+	
 	public Comment(ResultSet rs) throws SQLException {
 		processRow(rs);
 	}

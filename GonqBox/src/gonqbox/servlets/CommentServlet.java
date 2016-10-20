@@ -47,7 +47,7 @@ public class CommentServlet extends HttpServlet{
         if(session!=null)
         session.setAttribute("name", n);
 
-        User user = dao.loginUser(n, p);
+        User user = dao.loginUser(new User(n, p, ""));
         
         //check if user found
         if(user != null){  
