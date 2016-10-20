@@ -6,6 +6,7 @@ package gonqbox.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ResourceBundle;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.jstl.core.Config;
 
 import gonqbox.dao.DAO;
 import gonqbox.models.User;
@@ -23,7 +25,10 @@ import gonqbox.models.User;
  * @version 0.2
  */
 public class CommentServlet extends HttpServlet{
-	private static final long serialVersionUID = 1L;
+	
+	private static final long serialVersionUID = 2194000724171138285L;
+
+	private ResourceBundle bundle = null;
 	
 	//DAO Instance to access database
 	private DAO dao = DAO.getInstance();
@@ -35,7 +40,10 @@ public class CommentServlet extends HttpServlet{
      * @return void
      */
     public void doPost(HttpServletRequest request, HttpServletResponse response)  
-            throws ServletException, IOException {  
+            throws ServletException, IOException {
+    	String loc = Config.get(request.getSession(), Config.FMT_LOCALE).toString();	
+        bundle = ResourceBundle.getBundle("ui_"+loc);
+        
     	//todo
         response.setContentType("text/html");  
         PrintWriter out = response.getWriter();  
@@ -55,7 +63,7 @@ public class CommentServlet extends HttpServlet{
             rd.forward(request,response);  
         }  
         else{
-        	request.setAttribute("error","Invalid Username or Password");
+        	request.setAttribute("error",bundle.getObject("invalidCreds"));
             RequestDispatcher rd=request.getRequestDispatcher("index.jsp");      
             rd.include(request,response);  
         }  
