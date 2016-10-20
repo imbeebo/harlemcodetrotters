@@ -46,14 +46,14 @@ public class LoginServlet extends HttpServlet{
         String username = request.getParameter("username");  
         String password = request.getParameter("userpass"); 
         
-        User user = dao.loginUser(username, password);
+        User user = dao.loginUser(new User(username, password, ""));
         
         //check if user found
         if(user != null){
         	request.getSession().setAttribute("user", user);
-        	request.setAttribute("login_messenger",bundle.getObject("goodLoginMessage") + user.getUsername());
+        	request.setAttribute("index_messenger",bundle.getObject("goodLoginMessage") + user.getUsername());
         } else {
-        	request.setAttribute("login_messenger_err",bundle.getObject("invalidCreds"));
+        	request.setAttribute("index_messenger_err",bundle.getObject("invalidCreds"));
         }
         
     	request.getRequestDispatcher(Pages.INDEX.toString()).forward(request,response);

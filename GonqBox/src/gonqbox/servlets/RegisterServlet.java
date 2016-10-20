@@ -36,8 +36,8 @@ public class RegisterServlet extends HttpServlet {
 		if(user == null){
 			
 			String username = request.getParameter("username");
-			String email = request.getParameter("email");
-			String password = request.getParameter("password");
+			String email = request.getParameter("email-address");
+			String password = request.getParameter("userpass");
 			
 			// validation
 		/*
@@ -58,12 +58,13 @@ public class RegisterServlet extends HttpServlet {
 		*/
 			
 			if(validParams){
-				user = DAO.getInstance().registerUser(username, password, email);
+				user = DAO.getInstance().registerUser(new User(username, password, email));
 				if(user != null) registerSuccess = true;
 			}
 			
 			if(registerSuccess){
 				request.getSession().setAttribute("user", user);
+				request.setAttribute("index_messenger","Registration Successful, welcome " + user.getUsername());
 				request.getRequestDispatcher(Pages.INDEX.toString()).forward(request, responce);
 			}else{
 	        	request.setAttribute("register_messenger_err", registerError);
@@ -78,13 +79,13 @@ public class RegisterServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse responce) throws ServletException, IOException {
 		String loc = Config.get(request.getSession(), Config.FMT_LOCALE).toString();
-    	
+
     	bundle = ResourceBundle.getBundle("ui_"+loc);
     	
 		User user = (User)request.getSession().getAttribute("user");
 
 		if (user != null){
-        	request.setAttribute("login_messenger_err", bundle.getObject("alreadyLoggedIn"));
+        	request.setAttribute("index_messenger_err", bundle.getObject("alreadyLoggedIn"));
 			request.getRequestDispatcher(Pages.INDEX.toString()).forward(request, responce);
 		}else{
 			request.setAttribute("username", "");

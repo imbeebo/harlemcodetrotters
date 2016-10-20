@@ -7,7 +7,6 @@
 
 package gonqbox.dao;
 
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -18,6 +17,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import gonqbox.models.Collaborator;
+import gonqbox.models.Comment;
 import gonqbox.models.File;
 import gonqbox.models.Folder;
 import gonqbox.models.Permission;
@@ -35,7 +35,6 @@ public class DAO {
 		if (conn == null) {
 			
 			try {
-				
 				String url = "jdbc:mysql://localhost:3306/";
 				String dbName = "gonqbox";
 				String driver = "com.mysql.jdbc.Driver";
@@ -69,8 +68,8 @@ public class DAO {
 	 * 
 	 * @return User object if valid, otherwise null
 	 */
-	public User loginUser(String username, String password) {
-		
+	public User loginUser(User user) {
+		if(null == user) throw new NullPointerException("User object is null.");
 		try {
 			PreparedStatement statement = null;
 			ResultSet rs = null;
@@ -84,8 +83,8 @@ public class DAO {
 			
 			statement = conn.prepareStatement(query);
 			
-			statement.setString(1, username);
-			statement.setString(2, password);
+			statement.setString(1, user.getUsername());
+			statement.setString(2, user.getPassword());
 			
 			rs = statement.executeQuery();
 			rs.first();
@@ -103,7 +102,8 @@ public class DAO {
 	 * 
 	 * @return User object if no conflict, otherwise null
 	 */
-	public User registerUser(String username, String password, String email) {
+	public User registerUser(User user) {
+		if(null == user) throw new NullPointerException("User object is null.");
 		try {
 			PreparedStatement statement = null;
 			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
@@ -113,17 +113,37 @@ public class DAO {
 					"`user_mail`, `password`, `salt`, `hash`) VALUES(?, ?, ?, ?, ?, 'test-salt', 'test-hash');";
 
 			statement = conn.prepareStatement(query);
-			statement.setString(1, username);
+			statement.setString(1, user.getUsername());
 			statement.setDate(2, date);
 			statement.setDate(3, date);
-			statement.setString(4, email);
-			statement.setString(5, password);
+			statement.setString(4, user.getEmail());
+			statement.setString(5, user.getPassword());
 			statement.executeUpdate();
 
-			return loginUser(username, password);
+			User newUser = loginUser(user);
+			createUserFolder(newUser);
+			return newUser;
 		} catch (SQLException e) {
 			System.out.println("Problem with the SQL: " + e);
 			return null;
+		}
+	}
+	
+	private void createUserFolder(User user) {
+		if(null == user) throw new NullPointerException("User object is null.");
+		try {
+			PreparedStatement statement = null;
+
+			String query = "INSERT INTO `tblfolder` (`owner_id`, "+
+					"`folder_size`, `file_count`) "+
+					"VALUES(?, 0, 0);";
+
+			statement = conn.prepareStatement(query);
+			statement.setInt(1, user.getUserID());
+			statement.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println("Problem with the SQL: " + e);
 		}
 	}
 	
@@ -245,5 +265,37 @@ public class DAO {
 
 	public boolean deleteCollaboratorFromFile(Collaborator toDelete) {
 		return false;
+	}
+	
+	/**
+	 * 
+	 * @param commentToAdd
+	 * @return true on successful addition, false on failure
+	 */
+	public boolean addComment(Comment commentToAdd){
+		try {
+			PreparedStatement statement = null;
+			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+			
+			String query = "INSERT INTO `tblComment` (`comment_id`, "+
+					"`uploader_id`,"+"`body`, "+"`dt`) VALUES(?, ?, ?, ?);";
+
+			statement = conn.prepareStatement(query);
+			statement.setInt(1, commentToAdd.getCommentID());
+			statement.setInt(2, commentToAdd.getUploaderID());
+			statement.setString(3, commentToAdd.getBody());
+			statement.setDate(4, date);
+			statement.executeUpdate();			
+			
+			//execution successful, return true
+			return true;
+		} catch (SQLException e) {
+			System.out.println("Problem with the SQL: " + e);
+			return false;
+		}
+	}
+
+	public ArrayList<Comment> getCommentsByFileID(int fileID) {
+		return null;
 	}
 }
