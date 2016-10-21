@@ -21,8 +21,7 @@ $(document).ready(function() {
             url : "comment",
             data : "fileID=" + fileID,
             success : function(data) {
-                $("#response").html(data);
-                console.log(data);
+                $(".modal-body").html(data);
             }
         });
 	});    
@@ -57,7 +56,7 @@ $(document).ready(function() {
 					</thead>
 					<tbody id="userFiles">
 						<% for(int i = 0; i < files.size(); i++){ %>
-							<tr><input type="hidden" value="<%= files.get(i).getFileID() %>" />
+							<tr data-toggle="modal" data-target="#myModal"><input type="hidden" value="<%= files.get(i).getFileID() %>" />
 								<td><a href="#"><%= files.get(i).getName() %></a></td>
 								<td><%= files.get(i).getFileSize() %></td>
 								<td>TODO</td>
@@ -67,6 +66,23 @@ $(document).ready(function() {
 						<% } %>
 					</tbody>
 				</table>
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+	      </div>
+	      <div class="modal-body">
+	        
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 			<% }else{ %>
 				<fmt:message bundle="${sessionScope.uitranslations}" key="noFilesInDir" />
 			<% } %>
