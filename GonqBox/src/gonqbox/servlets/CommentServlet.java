@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 
+import gonqbox.Pages;
 import gonqbox.dao.DAO;
 import gonqbox.models.Comment;
 import gonqbox.models.User;
@@ -49,20 +50,13 @@ public class CommentServlet extends HttpServlet{
     	String loc = Config.get(request.getSession(), Config.FMT_LOCALE).toString();	
         bundle = ResourceBundle.getBundle("ui_"+loc);
         
-    	//todo
-        response.setContentType("text/html");  
-        PrintWriter out = response.getWriter();  
 
         int fID=Integer.parseInt(request.getParameter("fileID")); 
         
-        List<Comment> comments = dao.getInstance().getCommentsByFileID(fID);
-        if (comments.isEmpty()) {
-        	out.close();
-        	return;
-        }
-        for(Comment c : comments) {
-        	out.println(c.getBody());
-        }
-        out.close();  
+        request.setAttribute("comments", dao.getCommentsByFileID(fID));
+
+        RequestDispatcher rd=request.getRequestDispatcher(Pages.COMMENT.toString());  
+        rd.forward(request,response);  
+
     }  
 }
