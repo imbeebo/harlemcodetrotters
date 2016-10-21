@@ -19,7 +19,7 @@ public class Comment {
 	}
 	
 	public void processRow(ResultSet rs) throws SQLException {
-		file_id = rs.getInt("file_id");
+		comment_id = rs.getInt("comment_id");
 		body = rs.getString("body");
 		uploader_id = rs.getInt("uploader_id");
 		file_id = rs.getInt("file_id");

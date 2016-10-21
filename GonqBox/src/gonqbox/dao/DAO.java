@@ -257,11 +257,11 @@ public class DAO {
 			PreparedStatement statement = null;
 			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 			
-			String query = "INSERT INTO `tblComment` (`comment_id`, "+
+			String query = "INSERT INTO `tblComment` (`file_id`, "+
 					"`uploader_id`,"+"`body`, "+"`dt`) VALUES(?, ?, ?, ?);";
 
 			statement = conn.prepareStatement(query);
-			statement.setInt(1, commentToAdd.getCommentID());
+			statement.setInt(1, commentToAdd.getFileID());
 			statement.setInt(2, commentToAdd.getUploaderID());
 			statement.setString(3, commentToAdd.getBody());
 			statement.setDate(4, date);
@@ -272,6 +272,26 @@ public class DAO {
 		} catch (SQLException e) {
 			System.out.println("Problem with the SQL: " + e);
 			return false;
+		}
+	}
+
+	public List<Comment> getCommentsByFileID(int fileID) {
+		try {
+			PreparedStatement statement = null;
+			ResultSet rs = null;
+
+			String query = "SELECT * FROM tblcomment WHERE file_id = ? ";
+			statement = conn.prepareStatement(query);
+			statement.setInt(1, fileID);
+			rs = statement.executeQuery();
+			List<Comment> comments = new ArrayList<>();
+			while (rs.next()) {
+				comments.add(new Comment(rs));
+			}
+			return comments;
+		} catch (SQLException e) {
+			System.out.println("Problem with the SQL: " + e);
+			return null;
 		}
 	}
 }
