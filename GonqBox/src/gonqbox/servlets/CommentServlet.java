@@ -54,7 +54,7 @@ public class CommentServlet extends HttpServlet{
         PrintWriter out = response.getWriter();  
 
         int fID=Integer.parseInt(request.getParameter("fileID")); 
-
+        
         List<Comment> comments = dao.getInstance().getCommentsByFileID(fID);
         if (comments.isEmpty()) {
         	out.close();

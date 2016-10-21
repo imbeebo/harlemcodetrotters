@@ -8,8 +8,8 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="gonqbox.models.File" %> <% /*This is an issue we'll repeatedly face...*/ %>
 
-<script>
 
+<script>
 
 $(document).ready(function() {
 	$("#userFiles").on("click", "tr", function() {
