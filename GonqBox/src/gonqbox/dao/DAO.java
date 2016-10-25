@@ -300,7 +300,7 @@ public class DAO {
 			PreparedStatement statement = null;
 			ResultSet rs = null;
 
-			String query = "SELECT * FROM tblcomment WHERE file_id = ? ";
+			String query = "SELECT * FROM tblComment WHERE file_id = ? ";
 			statement = conn.prepareStatement(query);
 			statement.setInt(1, fileID);
 			rs = statement.executeQuery();

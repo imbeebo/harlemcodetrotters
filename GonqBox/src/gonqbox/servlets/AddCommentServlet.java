@@ -29,7 +29,7 @@ import gonqbox.models.User;
  * @author Mathew Boland
  * @version 0.2
  */
-@WebServlet(name = "comment", urlPatterns = { "/comment" })
+@WebServlet(name = "AddComment", urlPatterns = { "/AddComment" })
 public class AddCommentServlet extends HttpServlet{
 	
 	private static final long serialVersionUID = 2194000724171138285L;
