@@ -18,10 +18,10 @@ public class File {
 	private String checksum;
 	private Date checksumDate;
 	private Date checksumDateLastChecked;
-	private int fileSize;
+	private long fileSize;
 	
 	public File(String name, String sequence, int uploader_id, int folder_id, String checksum,
-			Date checksumDate, Date checksumDateLastChecked, int fileSize) {
+			Date checksumDate, Date checksumDateLastChecked, long fileSize) {
 		this.name = name;
 		this.sequence = sequence;
 		this.uploader_id = uploader_id;
@@ -60,7 +60,7 @@ public class File {
 		return sequence;
 	}
 	
-	public int getFileSize() {
+	public long getFileSize() {
 		return fileSize;
 	}
 	
@@ -92,7 +92,7 @@ public class File {
 		string += "sequence:" 		+ sequence							+ "\n"; 
 		string += "uploaderId:" 	+ ((Integer)uploader_id).toString()	+ "\n"; 
 		string += "folderId:"		+ ((Integer)folder_id).toString()	+ "\n";
-		string += "fileSize:"		+ ((Integer)fileSize).toString()	+ "\n";
+		string += "fileSize:"		+ ((Long)fileSize).toString()		+ "\n";
 		return string;
 	}
 

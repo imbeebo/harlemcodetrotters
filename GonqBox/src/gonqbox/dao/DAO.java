@@ -235,10 +235,9 @@ public class DAO {
 	public boolean addFile(File file) {
 		try {
 			PreparedStatement statement = null;
-			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 
-			String query = "INSERT INTO `tblfile` (`name`, `sequence`, `uploader_id`, `foler_id`, `checksum`, " +
-					"`checksum_date`, `checksum_date_last_verified`) VALUES (?, ?, ?, ?, ?, ?, ?);";
+			String query = "INSERT INTO `tblfile` (`name`, `sequence`, `uploader_id`, `folder_id`, `checksum`, " +
+					"`checksum_date`, `checksum_date_last_verified`, `file_size`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
 			statement = conn.prepareStatement(query);
 			statement.setString(1, file.getName());
@@ -248,6 +247,7 @@ public class DAO {
 			statement.setString(5, file.getChecksum());
 			statement.setDate(6, file.getChecksumDate());
 			statement.setDate(7, file.getChecksumDateLastChecked());
+			statement.setLong(8, file.getFileSize());
 			if(statement.executeUpdate() <= 0) {
 				return false;
 			}
