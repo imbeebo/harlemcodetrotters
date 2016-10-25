@@ -54,7 +54,7 @@ public class CommentServlet extends HttpServlet{
         
         request.setAttribute("comments", dao.getCommentsByFileID(fID));
 
-        RequestDispatcher rd=request.getRequestDispatcher(Pages.FOLDER.toString());  
+        RequestDispatcher rd=request.getRequestDispatcher(Pages.COMMENT.toString());  
         rd.forward(request,response);  
 
     }  

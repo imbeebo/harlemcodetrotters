@@ -62,7 +62,7 @@ public class AddCommentServlet extends HttpServlet{
         commentToAdd = new Comment(comment, uID, fID);
         
         dao.addComment(commentToAdd);
-        RequestDispatcher rd=request.getRequestDispatcher(Pages.FOLDER.toString());  
+        RequestDispatcher rd=request.getRequestDispatcher(Pages.COMMENT.toString());  
         rd.forward(request,response);  
         
     }  
