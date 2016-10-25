@@ -30,7 +30,7 @@ import gonqbox.models.User;
  * @version 0.2
  */
 @WebServlet(name = "comment", urlPatterns = { "/comment" })
-public class CommentServlet extends HttpServlet{
+public class AddCommentServlet extends HttpServlet{
 	
 	private static final long serialVersionUID = 2194000724171138285L;
 
@@ -49,13 +49,20 @@ public class CommentServlet extends HttpServlet{
             throws ServletException, IOException {
     	String loc = Config.get(request.getSession(), Config.FMT_LOCALE).toString();	
         bundle = ResourceBundle.getBundle("ui_"+loc);
-
+        Comment commentToAdd = null;
+        //get comment entered by user
+        String comment = request.getParameter("comment");  
+        
+        //get file id 
         int fID=Integer.parseInt(request.getParameter("fileID")); 
         
-        request.setAttribute("comments", dao.getCommentsByFileID(fID));
-
-        RequestDispatcher rd=request.getRequestDispatcher(Pages.COMMENT.toString());  
-        rd.forward(request,response);  
+        //get uploader id
+        User user = (User)request.getSession().getAttribute("user");
+        int uID = user.getUserID();
+        commentToAdd = new Comment(comment, uID, fID);
+        
+        dao.addComment(commentToAdd);
 
     }  
 }
+
