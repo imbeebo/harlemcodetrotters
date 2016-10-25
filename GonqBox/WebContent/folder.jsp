@@ -18,7 +18,7 @@ $(document).ready(function() {
 
 	    $.ajax({
             type : "POST",
-            url : "comment.jsp",
+            url : "comment",
             data : "fileID=" + fileID,
             success : function(data) {
                 $(".modal-body").html(data);

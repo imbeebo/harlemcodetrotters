@@ -33,9 +33,9 @@
 			<% } %>
 	</div>
 	<form action="AddComment" method="post">
-			<input type= "hidden" value= "<%=fID %>" id= "fileID">
+			<input type= "hidden" value= "<%=fID %>" name= "fileID" id= "fileID">
 			<div class="form-group">
-				<input type="text" class="form-control" name="Comment: " required="required" />
+				<input type="text" class="form-control" name="comment" required="required" />
 			</div>
 			<div class="form-group">
 				<button type="submit" class="btn btn-success"/></button>

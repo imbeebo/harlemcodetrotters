@@ -277,12 +277,12 @@ public class DAO {
 			PreparedStatement statement = null;
 			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 			
-			String query = "INSERT INTO `tblComment` (`file_id`, "+
-					"`uploader_id`,"+"`body`, "+"`dt`) VALUES(?, ?, ?, ?);";
+			String query = "INSERT INTO `tblComment` (`user_id`, "+
+					"`file_id`,"+"`body`, "+"`dt`) VALUES(?, ?, ?, ?);";
 
-			statement = conn.prepareStatement(query);
-			statement.setInt(1, commentToAdd.getFileID());
+			statement = conn.prepareStatement(query);			
 			statement.setInt(2, commentToAdd.getUploaderID());
+			statement.setInt(1, commentToAdd.getFileID());
 			statement.setString(3, commentToAdd.getBody());
 			statement.setDate(4, date);
 			statement.executeUpdate();			
