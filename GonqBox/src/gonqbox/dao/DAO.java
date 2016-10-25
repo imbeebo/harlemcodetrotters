@@ -281,8 +281,8 @@ public class DAO {
 					"`file_id`,"+"`body`, "+"`dt`) VALUES(?, ?, ?, ?);";
 
 			statement = conn.prepareStatement(query);			
-			statement.setInt(2, commentToAdd.getUploaderID());
-			statement.setInt(1, commentToAdd.getFileID());
+			statement.setInt(1, commentToAdd.getUploaderID());
+			statement.setInt(2, commentToAdd.getFileID());
 			statement.setString(3, commentToAdd.getBody());
 			statement.setDate(4, date);
 			statement.executeUpdate();			
