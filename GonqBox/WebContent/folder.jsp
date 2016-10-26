@@ -16,6 +16,7 @@ $(document).ready(function() {
 	    var fileID = $(this).children()[0].value;
 	    document.getElementById("addCommentFileID").value = fileID;
 
+    	var title= $(this).children()[1].innerText;
 	    $.ajax({
             type : "POST",
             url : "comment",
@@ -23,7 +24,7 @@ $(document).ready(function() {
             success : function(data) {
                 $(".modal-body").html(data);
             	var fileName = document.getElementById("fileURL").innerText;
-            	document.getElementById("myModalLabel").innerText = fileName;
+            	document.getElementById("myModalLabel").innerText = title;
             }
         });
 	});    
@@ -86,10 +87,12 @@ $(document).ready(function() {
 					    var fileID = document.getElementById("addCommentFileID").value;
 					    var comment=document.getElementById("userComment").value;
 					    document.getElementById("userComment").value = "";
+
+					    if(comment =="" || comment == null) return;
+					    
 					    $.ajax({
 				            type : "POST",
 				            url : "AddComment",
-				            
 				            data : { fileID: fileID, comment: comment },
 				            success : function(data) {
 				                $(".modal-body").html(data);
@@ -101,7 +104,7 @@ $(document).ready(function() {
 			<form id="addCommentForm">
 				<input type= "hidden" id="addCommentFileID">
 				<div class="form-group">
-					<input type="text" class="form-control" id="userComment" required />
+					<input type="text" class="form-control" id="userComment" />
 				</div>
 				<div class="form-group">
 					<button type="button" name="addCommentBtn" id="addCommentBtn" class="btn btn-success">Comment</button>
