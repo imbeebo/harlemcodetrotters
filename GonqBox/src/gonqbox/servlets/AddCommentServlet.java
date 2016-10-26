@@ -62,6 +62,8 @@ public class AddCommentServlet extends HttpServlet{
         commentToAdd = new Comment(comment, uID, fID);
         
         dao.addComment(commentToAdd);
+
+        request.setAttribute("comments", dao.getCommentsByFileID(fID));
         RequestDispatcher rd=request.getRequestDispatcher(Pages.COMMENT.toString());  
         rd.forward(request,response);  
         

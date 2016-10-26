@@ -14,7 +14,7 @@
 $(document).ready(function() {
 	$("#userFiles").on("click", "tr", function() {
 	    var fileID = $(this).children()[0].value;
-
+	    document.getElementById("addCommentFileID").value = fileID;
 
 	    $.ajax({
             type : "POST",
@@ -22,6 +22,8 @@ $(document).ready(function() {
             data : "fileID=" + fileID,
             success : function(data) {
                 $(".modal-body").html(data);
+            	var fileName = document.getElementById("fileURL").innerText;
+            	document.getElementById("myModalLabel").innerText = fileName;
             }
         });
 	});    
@@ -57,7 +59,7 @@ $(document).ready(function() {
 					<tbody id="userFiles">
 						<% for(int i = 0; i < files.size(); i++){ %>
 							<tr data-toggle="modal" data-target="#myModal"><input type="hidden" value="<%= files.get(i).getFileID() %>" />
-								<td><a href="#"><%= files.get(i).getName() %></a></td>
+								<td><a href="#" id="fileURL"><%= files.get(i).getName() %></a></td>
 								<td><%= files.get(i).getFileSize() %></td>
 								<td>TODO</td>
 								<td>TODO</td>
@@ -72,12 +74,39 @@ $(document).ready(function() {
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+	        <h4 class="modal-title" id="myModalLabel"></h4>
 	      </div>
 	      <div class="modal-body">
 	        
 	      </div>
 	      <div class="modal-footer">
+			<script>
+				$(document).ready(function() {
+					$("#addCommentBtn").on("click", function() {
+					    var fileID = document.getElementById("addCommentFileID").value;
+					    var comment=document.getElementById("userComment").value;
+					    document.getElementById("userComment").value = "";
+					    $.ajax({
+				            type : "POST",
+				            url : "AddComment",
+				            
+				            data : { fileID: fileID, comment: comment },
+				            success : function(data) {
+				                $(".modal-body").html(data);
+				            }
+				        });
+					});    
+				});     
+			</script>
+			<form id="addCommentForm">
+				<input type= "hidden" id="addCommentFileID">
+				<div class="form-group">
+					<input type="text" class="form-control" id="userComment" required />
+				</div>
+				<div class="form-group">
+					<button type="button" name="addCommentBtn" id="addCommentBtn" class="btn btn-success">Comment</button>
+				</div>
+			</form>
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 	      </div>
 	    </div>
