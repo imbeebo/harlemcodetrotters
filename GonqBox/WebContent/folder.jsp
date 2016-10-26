@@ -74,7 +74,7 @@ $(document).ready(function() {
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <a class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
 	        <h4 class="modal-title" id="myModalLabel"></h4>
 	      </div>
 	      <div class="modal-body">
@@ -99,9 +99,10 @@ $(document).ready(function() {
 				            }
 				        });
 					});    
-				});     
+				});   
+
 			</script>
-			<form id="addCommentForm">
+			<form id="addCommentForm" onsubmit="return false;">
 				<input type= "hidden" id="addCommentFileID">
 				<div class="form-group">
 					<input type="text" class="form-control" id="userComment" />
@@ -110,7 +111,7 @@ $(document).ready(function() {
 					<button type="button" name="addCommentBtn" id="addCommentBtn" class="btn btn-success">Comment</button>
 				</div>
 			</form>
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button class="btn btn-default" data-dismiss="modal">Close</button>
 	      </div>
 	    </div>
 	  </div>
