@@ -16,6 +16,7 @@
 	href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
 <link href="style/bootstrap-overrides.css" rel="stylesheet">
 <script src='upload.js' async></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
 <body>
 	<c:if test="${ empty sessionScope.loc}">

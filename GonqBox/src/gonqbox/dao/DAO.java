@@ -277,12 +277,12 @@ public class DAO {
 			PreparedStatement statement = null;
 			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 			
-			String query = "INSERT INTO `tblComment` (`comment_id`, "+
-					"`uploader_id`,"+"`body`, "+"`dt`) VALUES(?, ?, ?, ?);";
+			String query = "INSERT INTO `tblComment` (`user_id`, "+
+					"`file_id`,"+"`body`, "+"`dt`) VALUES(?, ?, ?, ?);";
 
-			statement = conn.prepareStatement(query);
-			statement.setInt(1, commentToAdd.getCommentID());
-			statement.setInt(2, commentToAdd.getUploaderID());
+			statement = conn.prepareStatement(query);			
+			statement.setInt(1, commentToAdd.getUploaderID());
+			statement.setInt(2, commentToAdd.getFileID());
 			statement.setString(3, commentToAdd.getBody());
 			statement.setDate(4, date);
 			statement.executeUpdate();			
@@ -295,7 +295,23 @@ public class DAO {
 		}
 	}
 
-	public ArrayList<Comment> getCommentsByFileID(int fileID) {
-		return null;
+	public List<Comment> getCommentsByFileID(int fileID) {
+		try {
+			PreparedStatement statement = null;
+			ResultSet rs = null;
+
+			String query = "SELECT * FROM tblComment WHERE file_id = ? ";
+			statement = conn.prepareStatement(query);
+			statement.setInt(1, fileID);
+			rs = statement.executeQuery();
+			List<Comment> comments = new ArrayList<>();
+			while (rs.next()) {
+				comments.add(new Comment(rs));
+			}
+			return comments;
+		} catch (SQLException e) {
+			System.out.println("Problem with the SQL: " + e);
+			return null;
+		}
 	}
 }

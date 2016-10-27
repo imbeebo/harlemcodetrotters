@@ -8,14 +8,34 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="gonqbox.models.File" %> <% /*This is an issue we'll repeatedly face...*/ %>
 
+
+<script>
+
+$(document).ready(function() {
+	$("#userFiles").on("click", "tr", function() {
+	    var fileID = $(this).children()[0].value;
+	    document.getElementById("addCommentFileID").value = fileID;
+
+    	var title= $(this).children()[1].innerText;
+	    $.ajax({
+            type : "POST",
+            url : "comment",
+            data : "fileID=" + fileID,
+            success : function(data) {
+                $(".modal-body").html(data);
+            	var fileName = document.getElementById("fileURL").innerText;
+            	document.getElementById("myModalLabel").innerText = title;
+            }
+        });
+	});    
+});     
+</script>
 	<%
 		String folderOwner = (String)request.getAttribute("folder_owner");  
 		int folderFileCount = (Integer)request.getAttribute("folder_file_count");  
 		int folderSize = (Integer)request.getAttribute("folder_size");
 		@SuppressWarnings("unchecked") List<File> files = (List<File>)request.getAttribute("files");		
 	%>
-
-	
 
 	<div class="row m-t-2">
 		<div class="card">
@@ -37,10 +57,10 @@
 						<th><fmt:message bundle="${sessionScope.uitranslations}" key="uploadDate" /></th>
 						<th>Actions</th>
 					</thead>
-					<tbody>
+					<tbody id="userFiles">
 						<% for(int i = 0; i < files.size(); i++){ %>
-							<tr>
-								<td><a href="#"><%= files.get(i).getName() %></a></td>
+							<tr data-toggle="modal" data-target="#myModal"><input type="hidden" value="<%= files.get(i).getFileID() %>" />
+								<td><a href="#" id="fileURL"><%= files.get(i).getName() %></a></td>
 								<td><%= files.get(i).getFileSize() %></td>
 								<td>TODO</td>
 								<td>TODO</td>
@@ -49,6 +69,53 @@
 						<% } %>
 					</tbody>
 				</table>
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <a class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
+	        <h4 class="modal-title" id="myModalLabel"></h4>
+	      </div>
+	      <div class="modal-body">
+	        
+	      </div>
+	      <div class="modal-footer">
+			<script>
+				$(document).ready(function() {
+					$("#addCommentBtn").on("click", function() {
+					    var fileID = document.getElementById("addCommentFileID").value;
+					    var comment=document.getElementById("userComment").value;
+					    document.getElementById("userComment").value = "";
+
+					    if(comment =="" || comment == null) return;
+					    
+					    $.ajax({
+				            type : "POST",
+				            url : "AddComment",
+				            data : { fileID: fileID, comment: comment },
+				            success : function(data) {
+				                $(".modal-body").html(data);
+				            }
+				        });
+					});    
+				});   
+
+			</script>
+			<form id="addCommentForm" onsubmit="return false;">
+				<input type= "hidden" id="addCommentFileID">
+				<div class="form-group">
+					<input type="text" class="form-control" id="userComment" />
+				</div>
+				<div class="form-group">
+					<button type="button" name="addCommentBtn" id="addCommentBtn" class="btn btn-success">Comment</button>
+				</div>
+			</form>
+	        <button class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 			<% }else{ %>
 				<fmt:message bundle="${sessionScope.uitranslations}" key="noFilesInDir" />
 			<% } %>

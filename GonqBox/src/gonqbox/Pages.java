@@ -4,6 +4,7 @@ public enum Pages {
 	
 	REGISTER_PAGE			("register.jsp"),
 	FOLDER					("folder.jsp"),
+	COMMENT					("comment.jsp"),
 	INDEX					("index.jsp");
 	
     private final String page;
