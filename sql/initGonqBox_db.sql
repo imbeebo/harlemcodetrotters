@@ -1,10 +1,12 @@
 DROP DATABASE IF EXISTS GONQBOX;
+DROP DATABASE IF EXISTS gonqbox;
 
-CREATE DATABASE IF NOT EXISTS GONQBOX;
+CREATE DATABASE IF NOT EXISTS gonqbox;
 
-USE GONQBOX;
+USE gonqbox;
 
-CREATE TABLE IF NOT EXISTS `GONQBOX`.`tblUser` (
+
+CREATE TABLE IF NOT EXISTS `gonqbox`.`tbluser` (
 	`user_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`username` VARCHAR(20) NOT NULL UNIQUE,
 	`account_creation_date` DATE NOT NULL,
@@ -16,22 +18,22 @@ CREATE TABLE IF NOT EXISTS `GONQBOX`.`tblUser` (
 	PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS `GONQBOX`.`tblPermission` (
+CREATE TABLE IF NOT EXISTS `gonqbox`.`tblpermission` (
 	`permission_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`permission_name` VARCHAR(24) NOT NULL UNIQUE,
 	PRIMARY KEY (`permission_id`)
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS `GONQBOX`.`tblFolder` (
+CREATE TABLE IF NOT EXISTS `gonqbox`.`tblfolder` (
 	`folder_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`owner_id` INT UNSIGNED NOT NULL,
 	`folder_size` INT UNSIGNED NOT NULL,
 	`file_count` INT UNSIGNED NOT NULL,
 	PRIMARY KEY (`folder_id`),
-    FOREIGN KEY (`owner_id`) REFERENCES tblUser(`user_id`) ON DELETE CASCADE
+    FOREIGN KEY (`owner_id`) REFERENCES tbluser(`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS `GONQBOX`.`tblFile` (
+CREATE TABLE IF NOT EXISTS `gonqbox`.`tblfile` (
 	`file_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(255) NOT NULL UNIQUE,
 	`file_size` INT UNSIGNED NOT NULL,
@@ -42,19 +44,19 @@ CREATE TABLE IF NOT EXISTS `GONQBOX`.`tblFile` (
 	`checksum_date` DATE NOT NULL,
 	`checksum_date_last_verified` DATE NOT NULL,
 	PRIMARY KEY (`file_id`),
-	FOREIGN KEY (`uploader_id`) REFERENCES tblUser(`user_id`) ON DELETE CASCADE,
-	FOREIGN KEY (`folder_id`) REFERENCES tblFolder(`folder_id`) ON DELETE CASCADE
+	FOREIGN KEY (`uploader_id`) REFERENCES tbluser(`user_id`) ON DELETE CASCADE,
+	FOREIGN KEY (`folder_id`) REFERENCES tblfolder(`folder_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS `GONQBOX`.`tblCollaborator` (
+CREATE TABLE IF NOT EXISTS `gonqbox`.`tblcollaborator` (
 	`collaborator_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`user_id` INT UNSIGNED NOT NULL,
 	`file_id` INT UNSIGNED NOT NULL,
 	`folder_id` INT UNSIGNED NOT NULL,
 	PRIMARY KEY (`collaborator_id`),
-	FOREIGN KEY (`user_id`) REFERENCES tblUser(`user_id`) ON DELETE CASCADE,
-	FOREIGN KEY (`file_id`) REFERENCES tblFile(`file_id`) ON DELETE CASCADE,
-	FOREIGN KEY (`folder_id`) REFERENCES tblFile(`folder_id`) ON DELETE CASCADE
+	FOREIGN KEY (`user_id`) REFERENCES tbluser(`user_id`) ON DELETE CASCADE,
+	FOREIGN KEY (`file_id`) REFERENCES tblfile(`file_id`) ON DELETE CASCADE,
+	FOREIGN KEY (`folder_id`) REFERENCES tblfolder(`folder_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `GONQBOX`.`tblComment` (
@@ -127,10 +129,3 @@ INSERT INTO `gonqbox`.`tblComment`(`user_id`,`file_id`,`body`, `dt`)
 VALUES(2,2,'Second Post', CURDATE());
 INSERT INTO `gonqbox`.`tblComment`(`user_id`,`file_id`,`body`, `dt`)
 VALUES(3,2,'Go away', CURDATE());
-
-
-
-
-
-
-

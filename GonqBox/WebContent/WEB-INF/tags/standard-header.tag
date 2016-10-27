@@ -82,7 +82,8 @@
 		</ul>
 				
 		<form class='navbar-form pull-xs-right' action='/GonqBox/upload'
-			method='POST' onsubmit='submitFiles(event)'>
+			method='POST' onsubmit='submitFiles(event)' enctype='multipart/form-data'
+			id='upload-form'>
 			<div class='input-group'>
 				<div class='input-group-btn dropdown'>
 					<button class='btn btn-secondary dropdown-toggle' type='button'
@@ -93,7 +94,7 @@
 					</ul>
 				</div>
 				<label class='form-control btn btn-secondary'><fmt:message bundle="${sessionScope.uitranslations}"
-							key="selectFiles" />...<input type='file' id='upload-files' multiple
+							key="selectFiles" />...<input type='file' name='upload-files' id='upload-files' multiple form='upload-form'
 					style='display: none'>
 				</label> <span class="input-group-btn"> <input type='submit'
 					value='<fmt:message bundle="${sessionScope.uitranslations}"

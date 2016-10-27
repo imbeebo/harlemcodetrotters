@@ -36,8 +36,8 @@ public class FolderServlet extends HttpServlet {
 				req.setAttribute("folder_owner", user.getUsername());
 				req.setAttribute("folder_file_count", folder.getFileCount());
 				req.setAttribute("folder_size", folder.getSize());
+				req.setAttribute("files", dao.getFolderFiles(folder.getFolderID()));
 			}
-			req.setAttribute("files", dao.getFolderFiles(folder.getFolderID()));
 			
 	        RequestDispatcher rd=req.getRequestDispatcher(Pages.FOLDER.toString());  
 	        rd.forward(req,resp);  
