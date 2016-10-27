@@ -57,6 +57,17 @@ CREATE TABLE IF NOT EXISTS `GONQBOX`.`tblCollaborator` (
 	FOREIGN KEY (`folder_id`) REFERENCES tblFile(`folder_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+CREATE TABLE IF NOT EXISTS `GONQBOX`.`tblComment` (
+  	`comment_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  	`user_id` INT UNSIGNED NOT NULL,
+  	`file_id` INT UNSIGNED NOT NULL,
+  	`body` text collate utf8_unicode_ci NOT NULL,
+  	`dt` timestamp NOT NULL default CURRENT_TIMESTAMP,
+  	PRIMARY KEY (`comment_id`),
+  	FOREIGN KEY (`user_id`) REFERENCES tblUser(`user_id`) ON DELETE CASCADE,
+	FOREIGN KEY (`file_id`) REFERENCES tblFile(`file_id`) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
 /*tblUser Test Data*/
 
 INSERT INTO `gonqbox`.`tbluser`(`username`,`account_creation_date`,`last_logged_in_date`,`user_mail`,`password`,`salt`,`hash`)
@@ -105,3 +116,21 @@ VALUES('dog.webm','200','sequence',2,1,'checksum',CURDATE(),CURDATE());
 
 INSERT INTO `gonqbox`.`tblcollaborator`(`user_id`,`file_id`,`folder_id`)
 VALUES(2,3,1);
+
+/*tblComent Test data*/
+
+INSERT INTO `gonqbox`.`tblComment`(`user_id`,`file_id`,`body`, `dt`)
+VALUES(2,2,'First Post', CURDATE());
+INSERT INTO `gonqbox`.`tblComment`(`user_id`,`file_id`,`body`, `dt`)
+VALUES(3,2,'Youre so lame', CURDATE());
+INSERT INTO `gonqbox`.`tblComment`(`user_id`,`file_id`,`body`, `dt`)
+VALUES(2,2,'Second Post', CURDATE());
+INSERT INTO `gonqbox`.`tblComment`(`user_id`,`file_id`,`body`, `dt`)
+VALUES(3,2,'Go away', CURDATE());
+
+
+
+
+
+
+
