@@ -37,14 +37,14 @@ $(document).ready(function() {
 		@SuppressWarnings("unchecked") List<File> files = (List<File>)request.getAttribute("files");		
 	%>
 
-	
-
 	<div class="row m-t-2">
 		<div class="card">
 			<div class="card-header">
-				<h3 class="card-title pull-xs-left"><%= folderOwner != null ?  folderOwner+"'s " : "" %>Folder</h3>
+				<h3 class="card-title pull-xs-left"><%= folderOwner != null ?  folderOwner+"'s " : "" %>
+					<fmt:message bundle="${sessionScope.uitranslations}" key="folder" /></h3>
 				<% if(true/*user is valid (owner || collaborator) of folder*/) { %>
-				<a class="btn btn-outline-success pull-xs-right" href="#" role="button">Add Files</a>
+				<a class="btn btn-outline-success pull-xs-right" href="#" role="button">
+					<fmt:message bundle="${sessionScope.uitranslations}" key="addFiles" /></a>
 				<% } %>
 			</div>
 			<div class="card-block">

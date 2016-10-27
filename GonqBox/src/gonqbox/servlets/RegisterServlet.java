@@ -64,7 +64,7 @@ public class RegisterServlet extends HttpServlet {
 			
 			if(registerSuccess){
 				request.getSession().setAttribute("user", user);
-				request.setAttribute("index_messenger","Registration Successful, welcome " + user.getUsername());
+				request.setAttribute("index_messenger",bundle.getObject("goodRegistration") + user.getUsername());
 				request.getRequestDispatcher(Pages.INDEX.toString()).forward(request, responce);
 			}else{
 	        	request.setAttribute("register_messenger_err", registerError);
@@ -78,7 +78,8 @@ public class RegisterServlet extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse responce) throws ServletException, IOException {
-    	String loc = Config.get(request.getSession(), Config.FMT_LOCALE).toString();
+		String loc = Config.get(request.getSession(), Config.FMT_LOCALE).toString();
+
     	bundle = ResourceBundle.getBundle("ui_"+loc);
     	
 		User user = (User)request.getSession().getAttribute("user");
