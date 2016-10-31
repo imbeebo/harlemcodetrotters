@@ -27,10 +27,19 @@ public class FolderServlet extends HttpServlet {
     	String loc = Config.get(req.getSession(), Config.FMT_LOCALE).toString();
     	
     	bundle = ResourceBundle.getBundle("ui_"+loc);
+    	int userID = -1;
+    	User user;
+    	if(req.getParameter("userID") != null) {
+    		userID = Integer.parseInt(req.getParameter("userID").toString());
+			user = dao.getUserByID(userID);
+    	}
+    	else {
+    		user = (User)req.getSession().getAttribute("user");
+    		userID = user.getUserID();
+    	}
 		
-		User user = (User)req.getSession().getAttribute("user");
-		if(user != null){
-			Folder folder = dao.getUserFolder(user.getUserID());
+		if(userID >0){
+			Folder folder = dao.getUserFolder(userID);
 					
 			if(folder != null){
 				req.setAttribute("folder_owner", user.getUsername());

@@ -94,7 +94,32 @@ public class DAO {
 			System.out.println("Problem with the SQL in method DAO.loginUser: " + e);
 			return null;
 		}
-		
+	}
+	
+	public User getUserByID(int userID) {
+		if(userID <= 0) throw new NullPointerException("User ID is invalid");
+		try {
+			PreparedStatement statement = null;
+			ResultSet rs = null;
+			
+			String query = "";
+			query += "SELECT ";
+			query += "user_id, username, account_creation_date, last_logged_in_date, user_mail ";
+			query += "FROM tbluser ";
+			query += "WHERE user_id = ? ";
+			
+			statement = conn.prepareStatement(query);
+			
+			statement.setInt(1, userID);
+			
+			rs = statement.executeQuery();
+			rs.first();
+			return new User(rs);
+			
+		} catch (SQLException e) {
+			System.out.println("Problem with the SQL in method DAO.getUserByID: " + e);
+			return null;
+		}
 	}
 
 	/**
