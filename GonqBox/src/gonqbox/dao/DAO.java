@@ -22,6 +22,7 @@ import gonqbox.models.File;
 import gonqbox.models.Folder;
 import gonqbox.models.Permission;
 import gonqbox.models.User;
+import gonqbox.models.UserList;
 
 public class DAO {
 	private static Connection conn = null;
@@ -94,7 +95,32 @@ public class DAO {
 			System.out.println("Problem with the SQL in method DAO.loginUser: " + e);
 			return null;
 		}
-		
+	}
+	
+	public User getUserByID(int userID) {
+		if(userID <= 0) throw new NullPointerException("User ID is invalid");
+		try {
+			PreparedStatement statement = null;
+			ResultSet rs = null;
+			
+			String query = "";
+			query += "SELECT ";
+			query += "user_id, username, account_creation_date, last_logged_in_date, user_mail ";
+			query += "FROM tbluser ";
+			query += "WHERE user_id = ? ";
+			
+			statement = conn.prepareStatement(query);
+			
+			statement.setInt(1, userID);
+			
+			rs = statement.executeQuery();
+			rs.first();
+			return new User(rs);
+			
+		} catch (SQLException e) {
+			System.out.println("Problem with the SQL in method DAO.getUserByID: " + e);
+			return null;
+		}
 	}
 
 	/**
@@ -177,6 +203,66 @@ public class DAO {
 		try {
 		
 			String query = "SELECT * FROM tblfile WHERE folder_id = ?";
+			PreparedStatement statement = conn.prepareStatement(query);
+			
+			statement.setInt(1, folderId);
+			
+			ResultSet results = statement.executeQuery();
+			
+			List<File> files = null;
+			if(results.next()){
+				files = new ArrayList<>();
+				results.beforeFirst();
+				while (results.next()) {
+					files.add(new File(results));
+				}
+			}
+			
+			return files;
+			
+		} catch (SQLException e) {
+			System.out.println("Problem with the SQL in method DAO.loginUser: " + e);
+			return null;
+		}
+	}
+	
+	public List<UserList> getListOfUsers() {
+		try {
+			PreparedStatement statement = null;
+			ResultSet rs = null;
+			
+			String query = "";
+			query += "SELECT ";
+			query += "user_id, username ";
+			query += "FROM tbluser;";
+			
+			statement = conn.prepareStatement(query);
+			rs = statement.executeQuery();
+			
+			
+			List<UserList> users = null;
+			if(rs.next()){
+				users = new ArrayList<>();
+				rs.beforeFirst();
+				while (rs.next()) {
+					users.add(new UserList(rs));
+				}
+			}
+			return users;
+			
+		} catch (SQLException e) {
+			System.out.println("Problem with the SQL in method DAO.getUserByID: " + e);
+			return null;
+		}
+	}
+	
+	public List<File> getPublicFolderFiles(int folderId) {
+		
+		try {
+			String query = "SELECT fi.* FROM tblfile fi " +
+				"INNER JOIN tblfolder fo ON fi.folder_id = fo.folder_id " +
+				"INNER JOIN tblfilepublic p ON fi.file_id = p.file_id " +
+				"WHERE fo.folder_id = ? AND p.public = true;";
 			PreparedStatement statement = conn.prepareStatement(query);
 			
 			statement.setInt(1, folderId);
@@ -312,6 +398,45 @@ public class DAO {
 		} catch (SQLException e) {
 			System.out.println("Problem with the SQL: " + e);
 			return null;
+		}
+	}
+	
+	public boolean changePublicity(int fileID, boolean checkedState) {
+		try {
+			PreparedStatement statement = null;
+			ResultSet rs = null;
+
+			String query = "SELECT * FROM tblfilepublic WHERE file_id = ? ";
+			statement = conn.prepareStatement(query);
+			statement.setInt(1, fileID);
+			rs = statement.executeQuery();
+			int count = 0;
+			while(rs.next()){
+				count++;
+			}
+			if(count == 0) {
+				query = "INSERT INTO `tblfilepublic` (`file_id`, "+
+						"`public`) VALUES(?, ?);";
+
+				statement = conn.prepareStatement(query);			
+				statement.setInt(1, fileID);
+				statement.setBoolean(2, checkedState);
+				statement.executeUpdate();	
+			}
+			else {
+				query = "UPDATE `tblfilepublic` SET `public`=? "+
+						"WHERE `file_id`=?;";
+
+				statement = conn.prepareStatement(query);	
+				statement.setBoolean(1, checkedState);		
+				statement.setInt(2, fileID);
+				statement.executeUpdate();	
+			}
+			
+			return true;
+		} catch (SQLException e) {
+			System.out.println("Problem with the SQL: " + e);
+			return false;
 		}
 	}
 }
