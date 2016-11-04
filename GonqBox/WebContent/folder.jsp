@@ -12,11 +12,11 @@
 <script>
 
 $(document).ready(function() {
-	$("#userFiles").on("click", "tr", function() {
-	    var fileID = $(this).children()[0].value;
+	$(".addCommentLink").on("click", function() {
+	    var fileID = $(this).parent().siblings()[0].value;
 	    document.getElementById("addCommentFileID").value = fileID;
 
-    	var title= $(this).children()[1].innerText;
+    	var title= $(this).parent().siblings()[1].innerText;
 	    $.ajax({
             type : "POST",
             url : "comment",
@@ -27,13 +27,42 @@ $(document).ready(function() {
             	document.getElementById("myModalLabel").innerText = title;
             }
         });
-	});    
+	});
+	$("#addCommentBtn").on("click", function() {
+	    var fileID = document.getElementById("addCommentFileID").value;
+	    var comment=document.getElementById("userComment").value;
+	    document.getElementById("userComment").value = "";
+
+	    if(comment =="" || comment == null) return;
+	    
+	    $.ajax({
+            type : "POST",
+            url : "AddComment",
+            data : { fileID: fileID, comment: comment },
+            success : function(data) {
+                $(".modal-body").html(data);
+            }
+        });
+	});
+	$(".publicPrivateSelector").on("click", function() {
+		var fileID= $(this).parent().siblings()[0].value;
+		var checkedState = $(this).is(':checked');
+		
+	    $.ajax({
+            type : "POST",
+            url : "makePublicPrivate",
+            data : { fileID: fileID, checkedState: checkedState },
+            success : function(data) {
+            }
+        });
+	});     
 });     
 </script>
 	<%
 		String folderOwner = (String)request.getAttribute("folder_owner");  
 		int folderFileCount = (Integer)request.getAttribute("folder_file_count");  
 		int folderSize = (Integer)request.getAttribute("folder_size");
+		boolean otherUser = (boolean)request.getAttribute("otherUser");
 		@SuppressWarnings("unchecked") List<File> files = (List<File>)request.getAttribute("files");		
 	%>
 
@@ -55,16 +84,19 @@ $(document).ready(function() {
 						<th><fmt:message bundle="${sessionScope.uitranslations}" key="size" /></th>
 						<th><fmt:message bundle="${sessionScope.uitranslations}" key="owner" /></th>
 						<th><fmt:message bundle="${sessionScope.uitranslations}" key="uploadDate" /></th>
-						<th>Actions</th>
+						<% if(!otherUser) { %><th>Actions</th><%} %>
 					</thead>
 					<tbody id="userFiles">
 						<% for(int i = 0; i < files.size(); i++){ %>
-							<tr data-toggle="modal" data-target="#myModal"><input type="hidden" value="<%= files.get(i).getFileID() %>" />
+							<tr><input type="hidden" value="<%= files.get(i).getFileID() %>" />
 								<td><a href="#" id="fileURL"><%= files.get(i).getName() %></a></td>
 								<td><%= files.get(i).getFileSize() %></td>
 								<td>TODO</td>
 								<td>TODO</td>
-								<td>TODO</td>
+								
+								<td><a href="#" data-toggle="modal" data-target="#myModal" class="addCommentLink">Add Comment</a>
+								<% if(!otherUser) { %> | Make Public <input class="publicPrivateSelector" name="publicPrivateBox" type="checkbox" ><%} %></td>
+								
 							</tr>						
 						<% } %>
 					</tbody>
@@ -81,27 +113,6 @@ $(document).ready(function() {
 	        
 	      </div>
 	      <div class="modal-footer">
-			<script>
-				$(document).ready(function() {
-					$("#addCommentBtn").on("click", function() {
-					    var fileID = document.getElementById("addCommentFileID").value;
-					    var comment=document.getElementById("userComment").value;
-					    document.getElementById("userComment").value = "";
-
-					    if(comment =="" || comment == null) return;
-					    
-					    $.ajax({
-				            type : "POST",
-				            url : "AddComment",
-				            data : { fileID: fileID, comment: comment },
-				            success : function(data) {
-				                $(".modal-body").html(data);
-				            }
-				        });
-					});    
-				});   
-
-			</script>
 			<form id="addCommentForm" onsubmit="return false;">
 				<input type= "hidden" id="addCommentFileID">
 				<div class="form-group">
@@ -116,9 +127,12 @@ $(document).ready(function() {
 	    </div>
 	  </div>
 	</div>
-			<% }else{ %>
+			<% }else{ 
+			if(otherUser) {%>
+				<fmt:message bundle="${sessionScope.uitranslations}" key="noFilesInUserDir" />
+			<% } else {%>
 				<fmt:message bundle="${sessionScope.uitranslations}" key="noFilesInDir" />
-			<% } %>
+			<% }} %>
 			</div>
 			<div class="card-footer text-muted">
 				<fmt:message bundle="${sessionScope.uitranslations}" key="fileCount" /> = <%= folderFileCount %>
