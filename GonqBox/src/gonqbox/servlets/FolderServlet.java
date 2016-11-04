@@ -61,6 +61,7 @@ public class FolderServlet extends HttpServlet {
 			else {
 				req.setAttribute("files", dao.getFolderFiles(folder.getFolderID()));
 			}
+			req.setAttribute("user_list", dao.getListOfUsers());
 		}
 		
         RequestDispatcher rd=req.getRequestDispatcher(Pages.FOLDER.toString());  

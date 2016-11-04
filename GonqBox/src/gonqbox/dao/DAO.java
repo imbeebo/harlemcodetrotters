@@ -22,6 +22,7 @@ import gonqbox.models.File;
 import gonqbox.models.Folder;
 import gonqbox.models.Permission;
 import gonqbox.models.User;
+import gonqbox.models.UserList;
 
 public class DAO {
 	private static Connection conn = null;
@@ -221,6 +222,36 @@ public class DAO {
 			
 		} catch (SQLException e) {
 			System.out.println("Problem with the SQL in method DAO.loginUser: " + e);
+			return null;
+		}
+	}
+	
+	public List<UserList> getListOfUsers() {
+		try {
+			PreparedStatement statement = null;
+			ResultSet rs = null;
+			
+			String query = "";
+			query += "SELECT ";
+			query += "user_id, username ";
+			query += "FROM tbluser;";
+			
+			statement = conn.prepareStatement(query);
+			rs = statement.executeQuery();
+			
+			
+			List<UserList> users = null;
+			if(rs.next()){
+				users = new ArrayList<>();
+				rs.beforeFirst();
+				while (rs.next()) {
+					users.add(new UserList(rs));
+				}
+			}
+			return users;
+			
+		} catch (SQLException e) {
+			System.out.println("Problem with the SQL in method DAO.getUserByID: " + e);
 			return null;
 		}
 	}

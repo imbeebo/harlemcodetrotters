@@ -6,6 +6,7 @@
 
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="gonqbox.models.UserList" %>
 <%@ page import="gonqbox.models.File" %> <% /*This is an issue we'll repeatedly face...*/ %>
 
 
@@ -63,10 +64,23 @@ $(document).ready(function() {
 		int folderFileCount = (Integer)request.getAttribute("folder_file_count");  
 		int folderSize = (Integer)request.getAttribute("folder_size");
 		boolean otherUser = (boolean)request.getAttribute("otherUser");
+		@SuppressWarnings("unchecked") List<UserList> users = (List<UserList>)request.getAttribute("user_list");
 		@SuppressWarnings("unchecked") List<File> files = (List<File>)request.getAttribute("files");		
 	%>
 
-	<div class="row m-t-2">
+	<div class="row m-t-2"><p>
+		<div class="dropdown">
+			<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+				User Folders
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+				<% for(int i = 0; i < users.size(); i++){ %>
+					<li><a href="folder?userID=<%= users.get(i).getUserID() %>"><%= users.get(i).getUsername() %></a></li>					
+				<% } %>
+			</ul>
+		</div></p>
+
 		<div class="card">
 			<div class="card-header">
 				<h3 class="card-title pull-xs-left"><%= folderOwner != null ?  folderOwner+"'s " : "" %>
