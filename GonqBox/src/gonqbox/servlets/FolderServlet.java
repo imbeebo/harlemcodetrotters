@@ -27,25 +27,46 @@ public class FolderServlet extends HttpServlet {
     	String loc = Config.get(req.getSession(), Config.FMT_LOCALE).toString();
     	
     	bundle = ResourceBundle.getBundle("ui_"+loc);
+    	
+    	if(req.getSession().getAttribute("user") == null){
+    		req.setAttribute("index_messenger_err",bundle.getObject("noUserInSession"));
+	        RequestDispatcher rd=req.getRequestDispatcher(Pages.INDEX.toString());  
+	        rd.forward(req,resp); 
+    	}
+    	
+    	int userID = -1;
+    	User user = (User)req.getSession().getAttribute("user");
+    	boolean otherUser = false;
+    	if(req.getParameter("userID") != null) {
+    		otherUser = true;
+    		userID = Integer.parseInt(req.getParameter("userID").toString());
+			user = dao.getUserByID(userID);
+    	}
+    	else {
+    		userID = user.getUserID();
+    	}
+    	if(user.getUserID() == userID) otherUser= false;
 		
-		User user = (User)req.getSession().getAttribute("user");
-		if(user != null){
-			Folder folder = dao.getUserFolder(user.getUserID());
-					
-			if(folder != null){
-				req.setAttribute("folder_owner", user.getUsername());
-				req.setAttribute("folder_file_count", folder.getFileCount());
-				req.setAttribute("folder_size", folder.getSize());
+	
+		Folder folder = dao.getUserFolder(userID);
+				
+		if(folder != null){
+			req.setAttribute("otherUser", otherUser);
+			req.setAttribute("folder_owner", user.getUsername());
+			req.setAttribute("folder_file_count", folder.getFileCount());
+			req.setAttribute("folder_size", folder.getSize());
+			if(otherUser){
+				req.setAttribute("files", dao.getPublicFolderFiles(folder.getFolderID()));
+			}
+			else {
 				req.setAttribute("files", dao.getFolderFiles(folder.getFolderID()));
 			}
-			
-	        RequestDispatcher rd=req.getRequestDispatcher(Pages.FOLDER.toString());  
-	        rd.forward(req,resp);  
-		}else{ 
-			req.setAttribute("index_messenger_err",bundle.getObject("noUserInSession"));
-	        RequestDispatcher rd=req.getRequestDispatcher(Pages.INDEX.toString());  
-	        rd.forward(req,resp);  
+			req.setAttribute("user_list", dao.getListOfUsers());
 		}
+		
+        RequestDispatcher rd=req.getRequestDispatcher(Pages.FOLDER.toString());  
+        rd.forward(req,resp); 
+			
 	}
 	
 }

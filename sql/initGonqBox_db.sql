@@ -70,6 +70,14 @@ CREATE TABLE IF NOT EXISTS `GONQBOX`.`tblComment` (
 	FOREIGN KEY (`file_id`) REFERENCES tblFile(`file_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+CREATE TABLE IF NOT EXISTS `gonqbox`.`tblfilepublic` (
+	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`file_id` INT UNSIGNED NOT NULL,
+    `public` BOOL NOT NULL DEFAULT FALSE,
+	PRIMARY KEY (`id`),
+	FOREIGN KEY (`file_id`) REFERENCES tblfile(`file_id`) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
 /*tblUser Test Data*/
 
 INSERT INTO `gonqbox`.`tbluser`(`username`,`account_creation_date`,`last_logged_in_date`,`user_mail`,`password`,`salt`,`hash`)
