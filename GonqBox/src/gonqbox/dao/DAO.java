@@ -314,4 +314,21 @@ public class DAO {
 			return null;
 		}
 	}
+	
+	public User getUserByUserID(int userID) {
+		try {
+			PreparedStatement statement = null;
+			ResultSet rs = null;
+
+			String query = "SELECT * FROM tblUser WHERE user_id = ? ";
+			statement = conn.prepareStatement(query);
+			statement.setInt(1, userID);
+			rs = statement.executeQuery();
+			User user = new User(rs);
+			return user;
+		} catch (SQLException e) {
+			System.out.println("Problem with the SQL: " + e);
+			return null;
+		}
+	}
 }

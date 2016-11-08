@@ -5,7 +5,6 @@
 <gonqbox:standard-header title="GonqBox" />
 
 	<%
-	//hello
 		String messenger = (String)request.getAttribute("index_messenger");  
 		String messengerErr = (String)request.getAttribute("index_messenger_err");  
 	%>
