@@ -27,7 +27,7 @@
 					<tbody id="userFiles">
 						<% for(int i = 0; i < comments.size(); i++){ %>
 							<tr>
-								<td><a href="#"><%= users.get(i).getUsername() %></a></td>
+								<td><a href="#"><%= comments.get(i).getUsername() %></a></td>
 								<td><a href="#"><%= comments.get(i).getBody() %></a></td>
 							</tr>						
 						<% } %>
