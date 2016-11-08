@@ -35,7 +35,8 @@ public class FolderServlet extends HttpServlet {
     	}
     	
     	int userID = -1;
-    	User user = (User)req.getSession().getAttribute("user");
+    	User userMe = (User)req.getSession().getAttribute("user");
+    	User user = null;
     	boolean otherUser = false;
     	if(req.getParameter("userID") != null) {
     		otherUser = true;
@@ -43,10 +44,11 @@ public class FolderServlet extends HttpServlet {
 			user = dao.getUserByID(userID);
     	}
     	else {
-    		userID = user.getUserID();
+    		userID = userMe.getUserID();
     	}
-    	if(user.getUserID() == userID) otherUser= false;
+    	if(userMe.getUserID() == userID) otherUser= false;
 		
+    	user = userMe;
 	
 		Folder folder = dao.getUserFolder(userID);
 				
