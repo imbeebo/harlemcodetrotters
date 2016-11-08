@@ -13,6 +13,7 @@ public class Comment {
 	private String body;
 	private int uploader_id;
 	private int file_id;
+	private String username;
 
 	public Comment(String body, int uploader_id, int file_id) {
 		if(null == body) throw new NullPointerException("Comment cannot be null");
@@ -30,6 +31,7 @@ public class Comment {
 		body = rs.getString("body");
 		uploader_id = rs.getInt("user_id");
 		file_id = rs.getInt("file_id");
+		username = rs.getString("username");
 	}
 
 	public int getCommentID() {
@@ -38,6 +40,10 @@ public class Comment {
 	
 	public String getBody() {
 		return body;
+	}
+	
+	public String getUsername() {
+		return username;
 	}
 	
 	public int getUploaderID() {

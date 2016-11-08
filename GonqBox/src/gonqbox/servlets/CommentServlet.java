@@ -5,6 +5,8 @@
 package gonqbox.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.servlet.RequestDispatcher;
@@ -17,6 +19,8 @@ import javax.servlet.jsp.jstl.core.Config;
 
 import gonqbox.Pages;
 import gonqbox.dao.DAO;
+import gonqbox.models.Comment;
+import gonqbox.models.User;
 
 /** Purpose: Servlet to add new comment to files in comment section
  *  
@@ -34,8 +38,8 @@ public class CommentServlet extends HttpServlet{
 	private DAO dao = DAO.getInstance();
 	
 	/**
-     * Purpose: To add the comment into the database and 
-     * update the current comment section with the new comment
+     * Purpose: To display the current set of comments with their 
+     * users names displayed.
      * @param request and response
      * @return void
      */
@@ -46,8 +50,10 @@ public class CommentServlet extends HttpServlet{
 
         int fID=Integer.parseInt(request.getParameter("fileID")); 
         
-        request.setAttribute("comments", dao.getCommentsByFileID(fID));
-
+        //get all comments for file into list
+        List<Comment> comments = dao.getCommentsByFileID(fID);
+        request.setAttribute("comments", comments);
+        
         RequestDispatcher rd=request.getRequestDispatcher(Pages.COMMENT.toString());  
         rd.forward(request,response);  
     }  
