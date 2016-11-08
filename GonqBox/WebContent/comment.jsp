@@ -21,7 +21,7 @@
 			<% if(comments != null){ %>
 				<table class="table table-sm table-hover dataTable nowrap order-column" data-page-length='25'>
 					<thead>
-						<th>Comment</th>
+						<th>User</th><th>Comment</th>
 					</thead>
 					
 					<tbody id="userFiles">
