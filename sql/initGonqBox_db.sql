@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `gonqbox`.`tblfolder` (
 
 CREATE TABLE IF NOT EXISTS `gonqbox`.`tblfile` (
 	`file_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`name` VARCHAR(255) NOT NULL UNIQUE,
+	`name` VARCHAR(255) NOT NULL,
 	`file_size` INT UNSIGNED NOT NULL,
 	`sequence` VARCHAR(24) NOT NULL,
 	`uploader_id` INT UNSIGNED NOT NULL,

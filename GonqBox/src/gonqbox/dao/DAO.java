@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 import gonqbox.models.Collaborator;
 import gonqbox.models.Comment;
@@ -69,31 +70,34 @@ public class DAO {
 	 * 
 	 * @return User object if valid, otherwise null
 	 */
-	public User loginUser(User user) {
+	public Optional<User> loginUser(User user) {
 		if(null == user) throw new NullPointerException("User object is null.");
 		try {
 			PreparedStatement statement = null;
 			ResultSet rs = null;
-			
+
 			String query = "";
 			query += "SELECT ";
 			query += "user_id, username, account_creation_date, last_logged_in_date, user_mail ";
 			query += "FROM tbluser ";
 			query += "WHERE username = ? ";
 			query += "AND password = ?";
-			
+
 			statement = conn.prepareStatement(query);
-			
+
 			statement.setString(1, user.getUsername());
 			statement.setString(2, user.getPassword());
-			
+
 			rs = statement.executeQuery();
-			rs.first();
-			return new User(rs);
-			
+			if(rs.first()) {
+				return Optional.of(new User(rs));
+			} else {
+				return Optional.empty();
+			}
 		} catch (SQLException e) {
-			System.out.println("Problem with the SQL in method DAO.loginUser: " + e);
-			return null;
+			System.err.println("Problem with the SQL in method DAO.loginUser:");
+			e.printStackTrace();
+			return Optional.empty();
 		}
 	}
 	
@@ -146,11 +150,12 @@ public class DAO {
 			statement.setString(5, user.getPassword());
 			statement.executeUpdate();
 
-			User newUser = loginUser(user);
+			User newUser = loginUser(user).orElseThrow(() -> new RuntimeException("Login failed for newly-registered user"));
 			createUserFolder(newUser);
 			return newUser;
 		} catch (SQLException e) {
-			System.out.println("Problem with the SQL: " + e);
+			System.err.println("Problem with the SQL in method DAO.registerUser:");
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -169,7 +174,8 @@ public class DAO {
 			statement.executeUpdate();
 
 		} catch (SQLException e) {
-			System.out.println("Problem with the SQL: " + e);
+			System.err.println("Problem with the SQL in method DAO.createUserFolder:");
+			e.printStackTrace();
 		}
 	}
 	
@@ -192,7 +198,8 @@ public class DAO {
 			return new Folder(results);
 			
 		} catch (SQLException e) {
-			System.out.println("Problem with the SQL in method DAO.getUserFolder: " + e);
+			System.err.println("Problem with the SQL in method DAO.getUserFolder:");
+			e.printStackTrace();
 			return null;
 		}
 		
@@ -221,7 +228,8 @@ public class DAO {
 			return files;
 			
 		} catch (SQLException e) {
-			System.out.println("Problem with the SQL in method DAO.loginUser: " + e);
+			System.err.println("Problem with the SQL in method DAO.getFolderFiles:");
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -301,7 +309,8 @@ public class DAO {
 			}
 			return files;
 		} catch (SQLException e) {
-			System.out.println("Problem with the SQL: " + e);
+			System.err.println("Problem with the SQL in method DAO.getUserFiles:");
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -339,7 +348,8 @@ public class DAO {
 			}
 
 		} catch (SQLException e) {
-			System.out.println("Problem with the SQL: " + e);
+			System.err.println("Problem with the SQL in method DAO.addFile:");
+			e.printStackTrace();
 			return false;
 		}
 		return true;
@@ -376,7 +386,8 @@ public class DAO {
 			//execution successful, return true
 			return true;
 		} catch (SQLException e) {
-			System.out.println("Problem with the SQL: " + e);
+			System.err.println("Problem with the SQL in method DAO.addComment:");
+			e.printStackTrace();
 			return false;
 		}
 	}
