@@ -103,7 +103,8 @@ $(document).ready(function() {
 					<tbody id="userFiles">
 						<% for(int i = 0; i < files.size(); i++){ %>
 							<tr><input type="hidden" value="<%= files.get(i).getFileID() %>" />
-								<td><a href="#" id="fileURL"><%= files.get(i).getName() %></a></td>
+								<td><a href="/download?id=<%= files.get(i).getFileID() %>" id="fileURL">
+									<%= files.get(i).getName() %></a></td>
 								<td><%= files.get(i).getFileSize() %></td>
 								<td>TODO</td>
 								<td>TODO</td>
