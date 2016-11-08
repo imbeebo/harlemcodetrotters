@@ -109,7 +109,7 @@ $(document).ready(function() {
 								<td>TODO</td>
 								<td>TODO</td>
 								
-								<td><a href="#" data-toggle="modal" data-target="#myModal" class="addCommentLink">Add Comment</a>
+								<td><a href="#" data-toggle="modal" data-target="#myModal" class="addCommentLink">Comments</a>
 								<% if(!otherUser) { %> | Make Public <input class="publicPrivateSelector" name="publicPrivateBox" type="checkbox" ><%} %></td>
 								
 							</tr>						
