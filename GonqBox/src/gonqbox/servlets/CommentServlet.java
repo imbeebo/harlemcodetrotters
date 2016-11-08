@@ -53,15 +53,7 @@ public class CommentServlet extends HttpServlet{
         //get all comments for file into list
         List<Comment> comments = dao.getCommentsByFileID(fID);
         request.setAttribute("comments", comments);
-        
-        //create list of users for comments so it can be pulled in comment.jsp
-        List<User> users = new ArrayList<>();
-        for(int i = 0; i<comments.size(); i++) {
-			users.add(dao.getUserByUserID(comments.get(i).getUploaderID()));
-		}
-        
-        //set the attribute
-        request.setAttribute("users", users);
+		
         
         RequestDispatcher rd=request.getRequestDispatcher(Pages.COMMENT.toString());  
         rd.forward(request,response);  
