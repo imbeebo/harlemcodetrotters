@@ -15,13 +15,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import gonqbox.Config;
 import gonqbox.dao.DAO;
 import gonqbox.models.User;
 
 @WebServlet("/upload")
 @MultipartConfig(maxFileSize = 100 * 1024 * 1024)
 public class UploadServlet extends HttpServlet {
-	private static final String UPLOAD_DIRECTORY = "/srv/gonqbox/uploads";
 	private static final String RANDNAME_CHARSET = "abcdefghijklmnopqrstuvwxyz0123456789";
 	private static final long serialVersionUID = 1L;
 	private static final int MAX_TRIES = 16;
@@ -94,7 +94,7 @@ public class UploadServlet extends HttpServlet {
 	}
 
 	private File createFile(String name) {
-		File f = new File(UPLOAD_DIRECTORY + "/" + name);
+		File f = new File(Config.uploadDirectory, name);
 		f.getParentFile().mkdirs();
 		return f;
 	}

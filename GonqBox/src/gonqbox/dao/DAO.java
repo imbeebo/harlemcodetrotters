@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 import gonqbox.models.Collaborator;
 import gonqbox.models.Comment;
@@ -255,7 +256,27 @@ public class DAO {
 			return null;
 		}
 	}
-	
+
+	public Optional<File> getFileByID(int id) {
+		try {
+			PreparedStatement statement = null;
+			ResultSet rs = null;
+
+			String query = "SELECT * FROM tblfile WHERE file_id = ? ";
+			statement = conn.prepareStatement(query);
+			statement.setInt(1, id);
+			rs = statement.executeQuery();
+
+			if(rs.first()) {
+				return Optional.of(new File(rs));
+			}
+		} catch (SQLException e) {
+			System.err.println("Problem with the SQL: " + e);
+			e.printStackTrace();
+		}
+		return Optional.empty();
+	}
+
 	public List<File> getPublicFolderFiles(int folderId) {
 		
 		try {

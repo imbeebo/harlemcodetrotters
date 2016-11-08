@@ -5,8 +5,9 @@ public enum Pages {
 	REGISTER_PAGE			("register.jsp"),
 	FOLDER					("folder.jsp"),
 	COMMENT					("comment.jsp"),
-	INDEX					("index.jsp");
-	
+	INDEX					("index.jsp"),
+	GENERIC_ERROR			("error.jsp");
+
     private final String page;
     
     private Pages(final String page) {
