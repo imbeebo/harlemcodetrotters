@@ -1,3 +1,4 @@
+DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_login`(
 	IN _username	VARCHAR(20),
 	IN _hash 	VARCHAR(128)
@@ -9,4 +10,5 @@ BEGIN
 	WHERE `username` = _username
 	AND `hash` = _hash
 	LIMIT 1;
-END
+END$$
+DELIMITER ;

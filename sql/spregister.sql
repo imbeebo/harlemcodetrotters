@@ -1,5 +1,5 @@
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spregister`(
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_register`(
 	IN _username	VARCHAR(20),
 	IN _user_mail	VARCHAR(40),
 	IN _password 	VARCHAR(255),
@@ -22,4 +22,3 @@ BEGIN
 	VALUES (LAST_INSERT_ID(), 0, 0);
 END$$
 DELIMITER ;
-
