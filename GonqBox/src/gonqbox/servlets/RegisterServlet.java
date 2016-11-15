@@ -58,7 +58,7 @@ public class RegisterServlet extends HttpServlet {
 		*/
 			
 			if(validParams){
-				user = DAO.getInstance().registerUser(new User(username, password, email));
+				user = DAO.getInstance().registerUser(username, email, password);
 				if(user != null) registerSuccess = true;
 			}
 			

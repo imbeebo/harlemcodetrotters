@@ -6,7 +6,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spregister`(
 	IN _salt 		VARCHAR(128),
 	IN _hash	 	VARCHAR(128)
 )
-BEGIN
+BEGIN 
 	INSERT INTO `tbluser` (`username`,`account_creation_date`, `last_logged_in_date`, `user_mail`, `password`, `salt`, `hash`)
 	VALUES (
 		_username,
