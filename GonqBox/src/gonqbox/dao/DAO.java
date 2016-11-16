@@ -7,15 +7,25 @@
 
 package gonqbox.dao;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
+
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+
+import org.apache.catalina.tribes.util.Arrays;
 
 import gonqbox.models.Collaborator;
 import gonqbox.models.Comment;
@@ -64,39 +74,6 @@ public class DAO {
 		return dao;
 		
 	}
-
-	/**
-	 * Calls stored procedure to check if valid login, and return user object
-	 * 
-	 * @return User object if valid, otherwise null
-	 */
-	public User loginUser(User user) {
-		if(null == user) throw new NullPointerException("User object is null.");
-		try {
-			PreparedStatement statement = null;
-			ResultSet rs = null;
-			
-			String query = "";
-			query += "SELECT ";
-			query += "user_id, username, account_creation_date, last_logged_in_date, user_mail ";
-			query += "FROM tbluser ";
-			query += "WHERE username = ? ";
-			query += "AND password = ?";
-			
-			statement = conn.prepareStatement(query);
-			
-			statement.setString(1, user.getUsername());
-			statement.setString(2, user.getPassword());
-			
-			rs = statement.executeQuery();
-			rs.first();
-			return new User(rs);
-			
-		} catch (SQLException e) {
-			System.out.println("Problem with the SQL in method DAO.loginUser: " + e);
-			return null;
-		}
-	}
 	
 	public User getUserByID(int userID) {
 		if(userID <= 0) throw new NullPointerException("User ID is invalid");
@@ -125,33 +102,84 @@ public class DAO {
 	}
 
 	/**
+	 * Calls stored procedure to check if valid login, and return user object
+	 * @param password 
+	 * @param username 
+	 * 
+	 * @return User object if valid, otherwise null
+	 */
+	public User loginUser(String username, String password) { // these functions shouldn't take a user object, they should make one.
+		try {
+			PreparedStatement verifyStatement = conn.prepareStatement("SELECT salt, hash FROM gonqbox.tbluser WHERE username = ?");
+			verifyStatement.setString(1, username);
+			ResultSet verifyResultSet = verifyStatement.executeQuery();
+			verifyResultSet.first();
+			
+			byte[] salt = Base64.getDecoder().decode(verifyResultSet.getString("salt"));
+			String keyAlgorithm = new String("PBKDF2WithHmacSHA1");
+			KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
+			byte[] hash = SecretKeyFactory.getInstance(keyAlgorithm).generateSecret(spec).getEncoded();
+			
+			if (Arrays.equals(hash, Base64.getDecoder().decode(verifyResultSet.getString("hash")))){				
+				PreparedStatement loginStatement = conn.prepareCall("{call sp_login(?, ?)}");
+				loginStatement.setString(1, username);
+				loginStatement.setString(2, Base64.getEncoder().encodeToString(hash));
+				loginStatement.execute();
+				ResultSet loginResultSet = loginStatement.getResultSet();
+				loginResultSet.first();
+				return new User(loginResultSet);
+			}else return null;		
+		} catch (SQLException e) {
+			System.out.println("Problem with the SQL in method DAO.loginUser: " + e);
+			return null;
+		} catch (InvalidKeySpecException e) {
+			System.out.println("Invalid spec: " + e);
+			return null;
+		} catch (NoSuchAlgorithmException e) {
+			System.out.println("Invalid key generating algorithm: " + e);
+			return null;
+		}
+	}
+
+	/**
 	 * Registers user if there is no conflicting username or email
 	 * 
 	 * @return User object if no conflict, otherwise null
 	 */
-	public User registerUser(User user) {
-		if(null == user) throw new NullPointerException("User object is null.");
+	/* JUSTIFICATION: register/login should return a user object and not accept one, they should be generators, before this user should be unknown
+	 * 
+	 */
+	public User registerUser(String username, String email, String password) {
 		try {
-			PreparedStatement statement = null;
-			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+			
+			//Establishing user salt/hash.
+			String keyAlgorithm = new String("PBKDF2WithHmacSHA1");
+			SecureRandom random = new SecureRandom();
+			byte[] salt = new byte[16];
+			random.nextBytes(salt);
+			KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
+			byte[] hash = SecretKeyFactory.getInstance(keyAlgorithm).generateSecret(spec).getEncoded();
+						
+			PreparedStatement statement = conn.prepareCall("{call sp_register(?, ?, ?, ?, ?)}");
+			statement.setString(1, username);
+			statement.setString(2, email);
+			statement.setString(3, password);
+			statement.setString(4, Base64.getEncoder().encodeToString(salt));
+			statement.setString(5, Base64.getEncoder().encodeToString(hash));
+			statement.execute();
 
-			String query = "INSERT INTO `tbluser` (`username`, "+
-					"`account_creation_date`, `last_logged_in_date`, "+
-					"`user_mail`, `password`, `salt`, `hash`) VALUES(?, ?, ?, ?, ?, 'test-salt', 'test-hash');";
-
-			statement = conn.prepareStatement(query);
-			statement.setString(1, user.getUsername());
-			statement.setDate(2, date);
-			statement.setDate(3, date);
-			statement.setString(4, user.getEmail());
-			statement.setString(5, user.getPassword());
-			statement.executeUpdate();
-
-			User newUser = loginUser(user);
+			User newUser = loginUser(username, password);
 			createUserFolder(newUser);
 			return newUser;
+			
 		} catch (SQLException e) {
 			System.out.println("Problem with the SQL: " + e);
+			return null;
+		} catch (InvalidKeySpecException e) {
+			System.out.println("Invalid spec: " + e);
+			return null;
+		} catch (NoSuchAlgorithmException e) {
+			System.out.println("Invalid key generating algorithm: " + e);
 			return null;
 		}
 	}
