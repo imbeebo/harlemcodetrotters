@@ -98,7 +98,7 @@ $(document).ready(function() {
 						<th><fmt:message bundle="${sessionScope.uitranslations}" key="size" /></th>
 						<th><fmt:message bundle="${sessionScope.uitranslations}" key="owner" /></th>
 						<th><fmt:message bundle="${sessionScope.uitranslations}" key="uploadDate" /></th>
-						<% if(!otherUser) { %><th>Actions</th><%} %>
+						<% if(!otherUser) { %><th><fmt:message bundle="${sessionScope.uitranslations}" key="actions" /></th><%} %>
 					</thead>
 					<tbody id="userFiles">
 						<% for(int i = 0; i < files.size(); i++){ %>
