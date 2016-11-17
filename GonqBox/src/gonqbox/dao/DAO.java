@@ -231,7 +231,8 @@ public class DAO {
 		
 		try {
 		
-			String query = "SELECT * FROM tblfile WHERE folder_id = ?";
+			String query = "SELECT f.*, u.username FROM tblfile f INNER JOIN tbluser u " +
+					"ON u.user_id = f.uploader_id WHERE f.folder_id = ?";
 			PreparedStatement statement = conn.prepareStatement(query);
 			
 			statement.setInt(1, folderId);
@@ -308,9 +309,10 @@ public class DAO {
 	public List<File> getPublicFolderFiles(int folderId) {
 		
 		try {
-			String query = "SELECT fi.* FROM tblfile fi " +
+			String query = "SELECT fi.*, u.username FROM tblfile fi " +
 				"INNER JOIN tblfolder fo ON fi.folder_id = fo.folder_id " +
 				"INNER JOIN tblfilepublic p ON fi.file_id = p.file_id " +
+				"INNER JOIN tbluser u ON u.user_id = fi.uploader_id " +
 				"WHERE fo.folder_id = ? AND p.public = true;";
 			PreparedStatement statement = conn.prepareStatement(query);
 			

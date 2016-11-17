@@ -14,6 +14,7 @@ public class File {
 	private String name;
 	private String sequence;
 	private int uploader_id;
+	private String username;
 	private int folder_id;
 	private String checksum;
 	private Date checksumDate;
@@ -46,6 +47,7 @@ public class File {
 		checksumDate = rs.getDate("checksum_date");
 		checksumDateLastChecked = rs.getDate("checksum_date_last_verified");
 		fileSize = rs.getInt("file_size");
+		username = rs.getString("username");
 	}
 
 	public int getFileID() {
@@ -80,10 +82,14 @@ public class File {
 		return checksumDate;
 	}
 
-	
 	public Date getChecksumDateLastChecked() {
 		return checksumDateLastChecked;
 	}
+	
+	public String getUsername() {
+		return username;
+	}
+	
 	@Override
 	public String toString(){
 		String string = "";
