@@ -106,11 +106,11 @@ $(document).ready(function() {
 								<td><a href="download?id=<%= files.get(i).getFileID() %>" id="fileURL">
 									<%= files.get(i).getName() %></a></td>
 								<td><%= files.get(i).getFileSize() %></td>
-								<td>TODO</td>
-								<td>TODO</td>
+								<td><%= files.get(i).getUsername() %></td>
+								<td><%= files.get(i).getChecksumDate().toString() %></td>
 								
 								<td><a href="#" data-toggle="modal" data-target="#myModal" class="addCommentLink"><fmt:message bundle="${sessionScope.uitranslations}" key="comments" /></a>
-								<% if(!otherUser) { %> | <fmt:message bundle="${sessionScope.uitranslations}" key="comments" /> <input class="publicPrivateSelector" name="makePublic" type="checkbox" ><%} %></td>
+								<% if(!otherUser) { %> | <fmt:message bundle="${sessionScope.uitranslations}" key="makePublic" /> <input class="publicPrivateSelector" name="makePublic" type="checkbox" ><%} %></td>
 								
 							</tr>						
 						<% } %>
