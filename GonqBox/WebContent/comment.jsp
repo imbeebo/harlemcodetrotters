@@ -34,6 +34,7 @@
 					</tbody>
 				</table>
 			<% }else{ %>
+				<fmt:message bundle="${sessionScope.uitranslations}" key="${noComments}" />
 				There are no comments on this file.
 			<% } %>
 	</div>

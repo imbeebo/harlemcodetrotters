@@ -71,12 +71,12 @@
 			%>
 			<ul class="nav navbar-nav pull-xs-right m-l-2 m-r-2">
 			<li class="nav-item dropdown pull-left">
-				<a class="nav-link dropdown-toggle pull-left" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Profile</a>
+				<a class="nav-link dropdown-toggle pull-left" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><fmt:message bundle="${sessionScope.uitranslations}" key="profile" /></a>
 				<div class="dropdown-menu pull-left">
 					<a class="dropdown-item" href="/GonqBox/folder"><fmt:message bundle="${sessionScope.uitranslations}"
 							key="myFolder" /></a>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="/GonqBox/logout">Log Out</a>
+					<a class="dropdown-item" href="/GonqBox/logout"><fmt:message bundle="${sessionScope.uitranslations}" key="logout" /></a>
 				</div>
 			</li>
 		</ul>

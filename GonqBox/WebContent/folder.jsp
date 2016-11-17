@@ -71,7 +71,7 @@ $(document).ready(function() {
 	<div class="row m-t-2"><p>
 		<div class="dropdown">
 			<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-				User Folders
+				<fmt:message bundle="${sessionScope.uitranslations}" key="userFolders" />
 				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
@@ -109,8 +109,8 @@ $(document).ready(function() {
 								<td>TODO</td>
 								<td>TODO</td>
 								
-								<td><a href="#" data-toggle="modal" data-target="#myModal" class="addCommentLink">Comments</a>
-								<% if(!otherUser) { %> | Make Public <input class="publicPrivateSelector" name="publicPrivateBox" type="checkbox" ><%} %></td>
+								<td><a href="#" data-toggle="modal" data-target="#myModal" class="addCommentLink"><fmt:message bundle="${sessionScope.uitranslations}" key="comments" /></a>
+								<% if(!otherUser) { %> | <fmt:message bundle="${sessionScope.uitranslations}" key="comments" /> <input class="publicPrivateSelector" name="makePublic" type="checkbox" ><%} %></td>
 								
 							</tr>						
 						<% } %>
@@ -134,10 +134,10 @@ $(document).ready(function() {
 					<input type="text" class="form-control" id="userComment" />
 				</div>
 				<div class="form-group">
-					<button type="button" name="addCommentBtn" id="addCommentBtn" class="btn btn-success">Comment</button>
+					<button type="button" name="addCommentBtn" id="addCommentBtn" class="btn btn-success"><fmt:message bundle="${sessionScope.uitranslations}" key="comment" /></button>
 				</div>
 			</form>
-	        <button class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button class="btn btn-default" data-dismiss="modal"><fmt:message bundle="${sessionScope.uitranslations}" key="close" /></button>
 	      </div>
 	    </div>
 	  </div>
