@@ -110,7 +110,7 @@ public class DAO {
 	 */
 	public User loginUser(String username, String password) { // these functions shouldn't take a user object, they should make one.
 		try {
-			PreparedStatement verifyStatement = conn.prepareStatement("SELECT salt, hash FROM gonqbox.tbluser WHERE username = ?");
+			PreparedStatement verifyStatement = conn.prepareStatement("SELECT salt, hash FROM gonqbox.tbluser WHERE BINARY username = ?");
 			verifyStatement.setString(1, username);
 			ResultSet verifyResultSet = verifyStatement.executeQuery();
 			verifyResultSet.first();
