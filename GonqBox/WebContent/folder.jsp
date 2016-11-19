@@ -85,10 +85,6 @@ $(document).ready(function() {
 			<div class="card-header">
 				<h3 class="card-title pull-xs-left"><%= folderOwner != null ?  folderOwner+"'s " : "" %>
 					<fmt:message bundle="${sessionScope.uitranslations}" key="folder" /></h3>
-				<% if(true/*user is valid (owner || collaborator) of folder*/) { %>
-				<a class="btn btn-outline-success pull-xs-right" href="#" role="button">
-					<fmt:message bundle="${sessionScope.uitranslations}" key="addFiles" /></a>
-				<% } %>
 			</div>
 			<div class="card-block">
 			<% if(files != null){ %>
@@ -99,7 +95,8 @@ $(document).ready(function() {
 							<th><fmt:message bundle="${sessionScope.uitranslations}" key="size" /></th>
 							<th><fmt:message bundle="${sessionScope.uitranslations}" key="owner" /></th>
 							<th><fmt:message bundle="${sessionScope.uitranslations}" key="uploadDate" /></th>
-							<% if(!otherUser) { %><th><fmt:message bundle="${sessionScope.uitranslations}" key="actions" /></th><%} %>
+							<% if(!otherUser) { %><th><fmt:message bundle="${sessionScope.uitranslations}" key="actions" /></th><%} else { %>
+							<th><fmt:message bundle="${sessionScope.uitranslations}" key="comments" /></th><%} %>
 						</thead>
 						<tbody id="userFiles">
 							<% for(int i = 0; i < files.size(); i++){ %>
