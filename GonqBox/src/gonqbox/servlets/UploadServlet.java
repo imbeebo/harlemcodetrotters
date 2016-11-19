@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Paths;
 import java.util.Random;
 
 import javax.servlet.ServletException;
@@ -76,7 +77,7 @@ public class UploadServlet extends HttpServlet {
 
 				DAO dao = DAO.getInstance();
 				java.sql.Date now = new java.sql.Date(new java.util.Date().getTime());
-				if(dao.addFile(new gonqbox.models.File(p.getSubmittedFileName(), filename,
+				if(dao.addFile(new gonqbox.models.File(Paths.get(p.getSubmittedFileName()).getFileName().toString(), filename,
 						user.getUserID(), dao.getUserFolder(user.getUserID()).getFolderID(),
 						/*checksum*/"0", /*checksumDate*/now, /*checksumDateLastChecked*/now, file.length()))) {
 					return true;
