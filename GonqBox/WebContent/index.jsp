@@ -2,14 +2,19 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="gonqbox" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ page import="gonqbox.Pages" %>
+
+<% 		
+	if (session.getAttribute("user") != null) {
+	    response.sendRedirect("folder");
+	} 
+%>
 <gonqbox:standard-header title="GonqBox" />
 
 	<%
 		String messenger = (String)request.getAttribute("index_messenger");  
 		String messengerErr = (String)request.getAttribute("index_messenger_err");  
-	%>
 
-	<%
 		if(messengerErr != null){
 	%>
 		<div class="row m-t-2">

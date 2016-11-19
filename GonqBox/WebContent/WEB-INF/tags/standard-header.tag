@@ -30,7 +30,14 @@
 	<fmt:setBundle basename="ui" var="uitranslations" scope="session" />
 	<nav class="navbar navbar-light bg-faded">
 	<div class="container">
+	
+			<%
+				if (session.getAttribute("user") == null) {
+			%>
 		<a class="navbar-brand m-b-0" href="/GonqBox/">GonqBox</a>
+		<% } else { %>
+		<a class="navbar-brand m-b-0" href="/GonqBox/folder">GonqBox</a>
+		<% } %>
 		<ul class="nav navbar-nav pull-xs-right">
 			<%
 				if (session.getAttribute("user") == null) {
