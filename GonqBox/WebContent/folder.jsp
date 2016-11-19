@@ -92,30 +92,33 @@ $(document).ready(function() {
 			</div>
 			<div class="card-block">
 			<% if(files != null){ %>
-				<table class="table table-sm table-hover dataTable nowrap order-column" data-page-length='25'>
-					<thead>
-						<th><fmt:message bundle="${sessionScope.uitranslations}" key="file" /></th>
-						<th><fmt:message bundle="${sessionScope.uitranslations}" key="size" /></th>
-						<th><fmt:message bundle="${sessionScope.uitranslations}" key="owner" /></th>
-						<th><fmt:message bundle="${sessionScope.uitranslations}" key="uploadDate" /></th>
-						<% if(!otherUser) { %><th><fmt:message bundle="${sessionScope.uitranslations}" key="actions" /></th><%} %>
-					</thead>
-					<tbody id="userFiles">
-						<% for(int i = 0; i < files.size(); i++){ %>
-							<tr><input type="hidden" value="<%= files.get(i).getFileID() %>" />
-								<td><a href="download?id=<%= files.get(i).getFileID() %>" id="fileURL">
-									<%= files.get(i).getName() %></a></td>
-								<td><%= files.get(i).getFileSize() %></td>
-								<td><%= files.get(i).getUsername() %></td>
-								<td><%= files.get(i).getChecksumDate().toString() %></td>
-								
-								<td><a href="#" data-toggle="modal" data-target="#myModal" class="addCommentLink"><fmt:message bundle="${sessionScope.uitranslations}" key="comments" /></a>
-								<% if(!otherUser) { %> | <fmt:message bundle="${sessionScope.uitranslations}" key="makePublic" /> <input class="publicPrivateSelector" name="makePublic" type="checkbox" ><%} %></td>
-								
-							</tr>						
-						<% } %>
-					</tbody>
-				</table>
+				<div class="table-responsive">
+					<table class="table table-sm table-hover dataTable order-column table-striped" data-page-length='25'>
+						<thead class="thead-inverse">
+							<th><fmt:message bundle="${sessionScope.uitranslations}" key="file" /></th>
+							<th><fmt:message bundle="${sessionScope.uitranslations}" key="size" /></th>
+							<th><fmt:message bundle="${sessionScope.uitranslations}" key="owner" /></th>
+							<th><fmt:message bundle="${sessionScope.uitranslations}" key="uploadDate" /></th>
+							<% if(!otherUser) { %><th><fmt:message bundle="${sessionScope.uitranslations}" key="actions" /></th><%} %>
+						</thead>
+						<tbody id="userFiles">
+							<% for(int i = 0; i < files.size(); i++){ %>
+								<tr><input type="hidden" value="<%= files.get(i).getFileID() %>" />
+									<td><a href="download?id=<%= files.get(i).getFileID() %>" id="fileURL">
+										<%= files.get(i).getName() %></a></td>
+									<td><%= files.get(i).getFileSize() %></td>
+									<td><%= files.get(i).getUsername() %></td>
+									<td><%= files.get(i).getChecksumDate().toString() %></td>
+									
+									<td><a href="#" data-toggle="modal" data-target="#myModal" class="addCommentLink"><fmt:message bundle="${sessionScope.uitranslations}" key="comments" /></a>
+									<% if(!otherUser) { %> | <label for="makePublic<%= files.get(i).getFileID() %>"><fmt:message bundle="${sessionScope.uitranslations}" key="makePublic" /></label> 
+									<input class="publicPrivateSelector" id="makePublic<%= files.get(i).getFileID() %>" name="makePublic<%= files.get(i).getFileID() %>" type="checkbox" ><%} %></td>
+									
+								</tr>						
+							<% } %>
+						</tbody>
+					</table>
+				</div>
 	<!-- Modal -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	  <div class="modal-dialog" role="document">
