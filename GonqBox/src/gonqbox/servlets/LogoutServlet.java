@@ -25,7 +25,12 @@ public class LogoutServlet extends HttpServlet{
 		if(request.getSession().getAttribute("user") != null){
 			request.getSession().setAttribute("user", null);
 			request.setAttribute("index_messenger",bundle.getObject("logoutSuccess"));
-		}else{
+		}
+		else if(request.getSession().getAttribute("user") == null){
+			//user refreshed page so dialogue still appears 
+			request.getSession().setAttribute("user", null);
+		}
+		else{
         	request.setAttribute("index_messenger_err",bundle.getObject("logoutUnsuccessful"));
 		}        
     	request.getRequestDispatcher(Pages.INDEX.toString()).forward(request,response);
