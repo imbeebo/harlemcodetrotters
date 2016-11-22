@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Paths;
 import java.util.Random;
+import java.util.ResourceBundle;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -28,8 +29,13 @@ public class UploadServlet extends HttpServlet {
 	private static final String RANDNAME_CHARSET = "abcdefghijklmnopqrstuvwxyz0123456789";
 	private static final long serialVersionUID = 1L;
 	private static final int MAX_TRIES = 16;
+	private ResourceBundle bundle = null;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String loc =  javax.servlet.jsp.jstl.core.Config.get(request.getSession(), javax.servlet.jsp.jstl.core.Config.FMT_LOCALE).toString();
+    	
+    	bundle = ResourceBundle.getBundle("ui_"+loc);
+    	
 		User user = (User)request.getSession().getAttribute("user");
 		if(user == null){
 			return;
@@ -55,7 +61,7 @@ public class UploadServlet extends HttpServlet {
 							errmsg -> {success[0] = false; errors[0] += "<li>" + errmsg + "</li>";});
 				} else {
 					success[0] = false;
-					errors[0] += "<li>Your folder does not have sufficient space left to upload " + p.getSubmittedFileName() + "</li>";
+					errors[0] += "<li>" + bundle.getObject("noSpaceForFile") + " " + p.getSubmittedFileName() + "</li>";
 				}
 			}
 		}
@@ -96,7 +102,7 @@ public class UploadServlet extends HttpServlet {
 
 				/* One last size check; to handle concurrent uploads possibly exceeding the limit */
 				if(dao.getUserFolder(user.getUserID()).getSize() + p.getSize() > Config.maxFolderSize) {
-					return Result.err("Your folder does not have sufficient space left to upload " + p.getSubmittedFileName());
+					return Result.err(bundle.getObject("noSpaceForFile") + " " + p.getSubmittedFileName());
 				}
 
 				java.sql.Date now = new java.sql.Date(new java.util.Date().getTime());
@@ -106,7 +112,7 @@ public class UploadServlet extends HttpServlet {
 					return Result.ok(null);
 				} else {
 					file.delete();
-					return Result.err("An internal error occurred while saving the uploaded file");
+					return Result.err(bundle.getObject("fileUploadError").toString());
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -114,7 +120,7 @@ public class UploadServlet extends HttpServlet {
 			}
 		}
 
-		return Result.err("An internal error occurred while saving the uploaded file");
+		return Result.err(bundle.getObject("fileUploadError").toString());
 	}
 
 	private File createFile(String name) {
