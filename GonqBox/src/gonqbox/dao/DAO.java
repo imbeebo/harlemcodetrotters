@@ -291,7 +291,7 @@ public class DAO {
 			PreparedStatement statement = null;
 			ResultSet rs = null;
 
-			String query = "SELECT * FROM tblfile WHERE file_id = ? ";
+			String query = "SELECT tblfile.*, tbluser.username FROM tblfile INNER JOIN tbluser ON tbluser.user_id = tblfile.uploader_id WHERE tblfile.file_id = ? ";
 			statement = conn.prepareStatement(query);
 			statement.setInt(1, id);
 			rs = statement.executeQuery();
@@ -342,7 +342,7 @@ public class DAO {
 			PreparedStatement statement = null;
 			ResultSet rs = null;
 
-			String query = "SELECT * FROM tblfile WHERE user_id = ? ";
+			String query = "SELECT tblfile.*, tbluser.username FROM tblfile INNER JOIN tbluser ON tbluser.user_id = tblfile.uploader_id WHERE tblfile.uploader_id = ?";
 			statement = conn.prepareStatement(query);
 			statement.setInt(1, userId);
 			rs = statement.executeQuery();
