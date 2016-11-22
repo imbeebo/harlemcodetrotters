@@ -12,6 +12,7 @@ import java.util.Properties;
 public class Config {
 	// 1) Configuration values:
 	public static String uploadDirectory;
+	public static long maxFolderSize;
 
 	private static final String CONFIG_LOCATION;
 	private static final Properties props;
@@ -20,6 +21,7 @@ public class Config {
 		defaults = new Properties();
 		// Default values:
 		defaults.setProperty("uploadDirectory", "uploads");
+		defaults.setProperty("maxFolderSize", "" + (64 * 1024 * 1024));
 
 		CONFIG_LOCATION = "gonqbox.cfg";
 		props = new Properties(defaults);
@@ -40,11 +42,17 @@ public class Config {
 
 		// 3) Copy properties into config fields:
 		uploadDirectory = props.getProperty("uploadDirectory");
+		try {
+			maxFolderSize = Long.parseLong(props.getProperty("maxFolderSize"));
+		} catch(NumberFormatException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void saveConfig() throws IOException {
 		// 4) Copy config fields into properties:
 		props.setProperty("uploadDirectory", uploadDirectory);
+		props.setProperty("maxFolderSize", "" + maxFolderSize);
 
 		props.store(new FileWriter(CONFIG_LOCATION), null);
 	}

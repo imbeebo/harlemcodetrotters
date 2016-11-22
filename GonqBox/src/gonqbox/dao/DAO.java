@@ -387,6 +387,8 @@ public class DAO {
 			statement.setLong(8, file.getFileSize());
 			if(statement.executeUpdate() <= 0) {
 				return false;
+			} else {
+				updateFolderSize(file.getFolderID());
 			}
 
 		} catch (SQLException e) {
@@ -394,6 +396,20 @@ public class DAO {
 			return false;
 		}
 		return true;
+	}
+
+	private void updateFolderSize(int folderID) {
+		try {
+			String query = "update tblfolder natural join (select sum(file_size) as size, count(*) as count, folder_id "
+					+ "from tblfile group by folder_id) as calc set folder_size = calc.size, file_count = calc.count "
+					+ "where tblfolder.folder_id = ?";
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setInt(1, folderID);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			System.err.println("Problem with the SQL in updateFolderSize(): " + e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	public boolean addCollaboratorToFile(File fileToShare) {

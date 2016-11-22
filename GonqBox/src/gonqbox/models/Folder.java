@@ -11,7 +11,7 @@ import java.sql.SQLException;
 public class Folder {
 	private int folder_id;
 	private int owner_id;
-	private int folder_size;
+	private long folder_size;
 	private int file_count;
 
 	public Folder(ResultSet rs) throws SQLException {
@@ -33,7 +33,7 @@ public class Folder {
 		return owner_id;
 	}
 
-	public int getSize() {
+	public long getSize() {
 		return folder_size;
 	}
 	
@@ -41,8 +41,8 @@ public class Folder {
 		return file_count;
 	}
 	
-	public void setSize(int size) {
-		this.folder_size = size;
+	public void setSize(long l) {
+		this.folder_size = l;
 	}
 	
 	public void setFileCount(int count) {
@@ -54,7 +54,7 @@ public class Folder {
 		String string = "";
 		string += "folder_id:" 				+ ((Integer)folder_id).toString() 	+ "\n"; 
 		string += "owner_id:" 				+ ((Integer)owner_id).toString() 	+ "\n"; 
-		string += "folder_size:" 			+ ((Integer)folder_size).toString()	+ "\n"; 
+		string += "folder_size:" 			+ ((Long)folder_size).toString()	+ "\n"; 
 		string += "file_count:" 			+ ((Integer)file_count).toString() 	+ "\n"; 
 		return string;
 	}

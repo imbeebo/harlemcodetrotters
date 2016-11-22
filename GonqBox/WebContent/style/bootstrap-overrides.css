@@ -57,6 +57,10 @@ body{
 	background-color: #dde;
 }
 
+.upload-progress ul li {
+	white-space: normal;
+}
+
 .upload-progress:nth-child(2n) {
 	background-color: #cdc;
 }

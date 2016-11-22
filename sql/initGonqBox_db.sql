@@ -35,9 +35,9 @@ CREATE TABLE IF NOT EXISTS `gonqbox`.`tblfolder` (
 
 CREATE TABLE IF NOT EXISTS `gonqbox`.`tblfile` (
 	`file_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`name` VARCHAR(255) NOT NULL UNIQUE,
+	`name` VARCHAR(255) NOT NULL,
 	`file_size` INT UNSIGNED NOT NULL,
-	`sequence` VARCHAR(24) NOT NULL,
+	`sequence` VARCHAR(24) NOT NULL UNIQUE,
 	`uploader_id` INT UNSIGNED NOT NULL,
 	`folder_id` INT UNSIGNED NOT NULL,
 	`checksum` VARCHAR(64) NOT NULL,
@@ -59,15 +59,15 @@ CREATE TABLE IF NOT EXISTS `gonqbox`.`tblcollaborator` (
 	FOREIGN KEY (`folder_id`) REFERENCES tblfolder(`folder_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS `GONQBOX`.`tblComment` (
+CREATE TABLE IF NOT EXISTS `gonqbox`.`tblComment` (
   	`comment_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   	`user_id` INT UNSIGNED NOT NULL,
   	`file_id` INT UNSIGNED NOT NULL,
   	`body` text collate utf8_unicode_ci NOT NULL,
   	`dt` timestamp NOT NULL default CURRENT_TIMESTAMP,
   	PRIMARY KEY (`comment_id`),
-  	FOREIGN KEY (`user_id`) REFERENCES tblUser(`user_id`) ON DELETE CASCADE,
-	FOREIGN KEY (`file_id`) REFERENCES tblFile(`file_id`) ON DELETE CASCADE
+	FOREIGN KEY (`user_id`) REFERENCES tbluser(`user_id`) ON DELETE CASCADE,
+	FOREIGN KEY (`file_id`) REFERENCES tblfile(`file_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `gonqbox`.`tblfilepublic` (
@@ -116,11 +116,11 @@ VALUES(4,0,0);
 /*tblFile Test Data*/
 
 INSERT INTO `gonqbox`.`tblfile`(`name`,`file_size`,`sequence`,`uploader_id`,`folder_id`,`checksum`,`checksum_date`,`checksum_date_last_verified`)
-VALUES('cat.jpg','200','sequence',3,3,'checksum',CURDATE(),CURDATE());
+VALUES('cat.jpg','200','sequence1',3,3,'checksum',CURDATE(),CURDATE());
 INSERT INTO `gonqbox`.`tblfile`(`name`,`file_size`,`sequence`,`uploader_id`,`folder_id`,`checksum`,`checksum_date`,`checksum_date_last_verified`)
-VALUES('two_cats.png','600','sequence',1,1,'checksum',CURDATE(),CURDATE());
+VALUES('two_cats.png','600','sequence2',1,1,'checksum',CURDATE(),CURDATE());
 INSERT INTO `gonqbox`.`tblfile`(`name`,`file_size`,`sequence`,`uploader_id`,`folder_id`,`checksum`,`checksum_date`,`checksum_date_last_verified`)
-VALUES('dog.webm','200','sequence',2,1,'checksum',CURDATE(),CURDATE());
+VALUES('dog.webm','200','sequence3',2,1,'checksum',CURDATE(),CURDATE());
 
 /*tblCollaborator Test Data*/
 
