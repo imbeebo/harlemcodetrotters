@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Paths;
 import java.util.Random;
+import java.util.ResourceBundle;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -17,7 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import gonqbox.Config;
+import gonqbox.Result;
 import gonqbox.dao.DAO;
+import gonqbox.models.Folder;
 import gonqbox.models.User;
 
 @WebServlet("/upload")
@@ -26,32 +29,54 @@ public class UploadServlet extends HttpServlet {
 	private static final String RANDNAME_CHARSET = "abcdefghijklmnopqrstuvwxyz0123456789";
 	private static final long serialVersionUID = 1L;
 	private static final int MAX_TRIES = 16;
+	private ResourceBundle bundle = null;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String loc =  javax.servlet.jsp.jstl.core.Config.get(request.getSession(), javax.servlet.jsp.jstl.core.Config.FMT_LOCALE).toString();
+    	
+    	bundle = ResourceBundle.getBundle("ui_"+loc);
+    	
 		User user = (User)request.getSession().getAttribute("user");
-		boolean success = true;
 		if(user == null){
 			return;
 		}
+
+		/* Workaround for mutable variables access from within a lambda: wrap in a one-element array, or
+		 * a container class, as all that matters is that the *reference* is effectively final. */
+		boolean success[] = {true};
+		String errors[] = {""};
+
 		for(Part p: request.getParts())
 		{
 			if(p.getName().equals("upload-files"))
 			{
-				success &= upload(p, user);
+				DAO dao = DAO.getInstance();
+				Folder folder = dao.getUserFolder(user.getUserID());
+
+				if(folder.getSize() + p.getSize() <= Config.maxFolderSize)
+				{
+					upload(p, user, folder, dao)
+						.match(
+							ok -> folder.setSize(folder.getSize() + p.getSize()),
+							errmsg -> {success[0] = false; errors[0] += "<li>" + errmsg + "</li>";});
+				} else {
+					success[0] = false;
+					errors[0] += "<li>" + bundle.getObject("noSpaceForFile") + " " + p.getSubmittedFileName() + "</li>";
+				}
 			}
 		}
 
+		response.setStatus(success[0]? HttpServletResponse.SC_OK : HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		if(request.getParameter("ajax") != null) {
-			//System.out.println("  AJAX upload");
+			response.getWriter().append(errors[0]);
 		} else {
-			//System.out.println("  Not AJAX upload");
+			response.getWriter().append("<!DOCTYPE html><html><head><title>Non-AJAX upload placeholder</title></head>"
+					+"<body><ul>" + errors[0] + "</ul></body></html>");
 		}
-		response.setStatus(success? HttpServletResponse.SC_OK : HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		response.getWriter().append("<!DOCTYPE html><html><head><title>Non-AJAX upload placeholder</title></head><body></body></html>");
 		response.flushBuffer();
 	}
 
-	private boolean upload(Part p, User user) {
+	private Result<Void, String> upload(Part p, User user, Folder folder, DAO dao) {
 		File file = null;
 		String filename = null;
 		try {
@@ -75,15 +100,19 @@ public class UploadServlet extends HttpServlet {
 					out.write(buffer, 0, read);
 				}
 
-				DAO dao = DAO.getInstance();
+				/* One last size check; to handle concurrent uploads possibly exceeding the limit */
+				if(dao.getUserFolder(user.getUserID()).getSize() + p.getSize() > Config.maxFolderSize) {
+					return Result.err(bundle.getObject("noSpaceForFile") + " " + p.getSubmittedFileName());
+				}
+
 				java.sql.Date now = new java.sql.Date(new java.util.Date().getTime());
 				if(dao.addFile(new gonqbox.models.File(Paths.get(p.getSubmittedFileName()).getFileName().toString(), filename,
-						user.getUserID(), dao.getUserFolder(user.getUserID()).getFolderID(),
+						user.getUserID(), folder.getFolderID(),
 						/*checksum*/"0", /*checksumDate*/now, /*checksumDateLastChecked*/now, file.length()))) {
-					return true;
+					return Result.ok(null);
 				} else {
 					file.delete();
-					return false;
+					return Result.err(bundle.getObject("fileUploadError").toString());
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -91,7 +120,7 @@ public class UploadServlet extends HttpServlet {
 			}
 		}
 
-		return false;
+		return Result.err(bundle.getObject("fileUploadError").toString());
 	}
 
 	private File createFile(String name) {

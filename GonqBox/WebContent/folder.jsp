@@ -62,7 +62,7 @@ $(document).ready(function() {
 	<%
 		String folderOwner = (String)request.getAttribute("folder_owner");  
 		int folderFileCount = (Integer)request.getAttribute("folder_file_count");  
-		int folderSize = (Integer)request.getAttribute("folder_size");
+		long folderSize = (Long)request.getAttribute("folder_size");
 		boolean otherUser = (boolean)request.getAttribute("otherUser");
 		@SuppressWarnings("unchecked") List<UserList> users = (List<UserList>)request.getAttribute("user_list");
 		@SuppressWarnings("unchecked") List<File> files = (List<File>)request.getAttribute("files");		

@@ -58,6 +58,7 @@ function sendFiles() {
 
 	var file = uploadQueue.shift();
 	var req = new XMLHttpRequest();
+	req.responseType = "text";
 
 	req.onreadystatechange = function() {
 		if(req.readyState === XMLHttpRequest.DONE) {
@@ -67,6 +68,11 @@ function sendFiles() {
 				file.bar.className = 'progress progress-success';
 			} else {
 				file.bar.className = 'progress progress-danger';
+				if(req.status === 500) {
+					var errorList = document.createElement('ul');
+					errorList.innerHTML = req.response;
+					file.bar.parentElement.appendChild(errorList);
+				}
 			}
 			sendFiles();
 		}

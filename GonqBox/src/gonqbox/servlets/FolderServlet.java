@@ -24,6 +24,10 @@ public class FolderServlet extends HttpServlet {
 	
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		if(req.getSession() == null){
+	        RequestDispatcher rd=req.getRequestDispatcher(Pages.INDEX.toString());  
+	        rd.forward(req,resp); 
+		}
     	String loc = Config.get(req.getSession(), Config.FMT_LOCALE).toString();
     	
     	bundle = ResourceBundle.getBundle("ui_"+loc);
@@ -36,15 +40,18 @@ public class FolderServlet extends HttpServlet {
     	
     	int userID = -1;
     	User userMe = (User)req.getSession().getAttribute("user");
+    	String userName = "";
     	User user = null;
     	boolean otherUser = false;
     	if(req.getParameter("userID") != null) {
     		otherUser = true;
     		userID = Integer.parseInt(req.getParameter("userID").toString());
 			user = dao.getUserByID(userID);
+    		userName = user.getUsername();
     	}
     	else {
     		userID = userMe.getUserID();
+    		userName = userMe.getUsername();
     	}
     	if(userMe.getUserID() == userID) otherUser= false;
 		
@@ -54,7 +61,7 @@ public class FolderServlet extends HttpServlet {
 				
 		if(folder != null){
 			req.setAttribute("otherUser", otherUser);
-			req.setAttribute("folder_owner", user.getUsername());
+			req.setAttribute("folder_owner", userName);
 			req.setAttribute("folder_file_count", folder.getFileCount());
 			req.setAttribute("folder_size", folder.getSize());
 			if(otherUser){
