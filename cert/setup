@@ -1,0 +1,11 @@
+To enable the certificate, you need to insert the following into server.xml:
+
+    <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true"
+              maxThreads="150" scheme="https" secure="true"
+              clientAuth="false" sslProtocol="TLS"
+       keystoreFile="C:\Users\thege\Desktop\Gonq\CST8218 WEB\ws\Servers\gonqbox"
+       keystorePass="Gonq2016" />
+
+Make sure you change the path to keystoreFile. 
+
+I have included a self-signed certificate in this folder.
