@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 
 import gonqbox.Pages;
+import gonqbox.Util;
 import gonqbox.dao.DAO;
 import gonqbox.models.Comment;
 import gonqbox.models.User;
@@ -47,8 +48,7 @@ public class AddCommentServlet extends HttpServlet{
      */
     public void doPost(HttpServletRequest request, HttpServletResponse response)  
             throws ServletException, IOException {
-    	String loc = Config.get(request.getSession(), Config.FMT_LOCALE).toString();	
-        bundle = ResourceBundle.getBundle("ui_"+loc);
+        bundle = Util.getResourceBundle(request);
         Comment commentToAdd = null;
         //get comment entered by user
         String comment = request.getParameter("comment");  

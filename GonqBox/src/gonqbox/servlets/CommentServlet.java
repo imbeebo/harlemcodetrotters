@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.jstl.core.Config;
 
 import gonqbox.Pages;
+import gonqbox.Util;
 import gonqbox.dao.DAO;
 import gonqbox.models.Comment;
 import gonqbox.models.User;
@@ -45,8 +46,7 @@ public class CommentServlet extends HttpServlet{
      */
     public void doPost(HttpServletRequest request, HttpServletResponse response)  
             throws ServletException, IOException {
-    	String loc = Config.get(request.getSession(), Config.FMT_LOCALE).toString();	
-        bundle = ResourceBundle.getBundle("ui_"+loc);
+		bundle = Util.getResourceBundle(request);
 
         int fID=Integer.parseInt(request.getParameter("fileID")); 
         

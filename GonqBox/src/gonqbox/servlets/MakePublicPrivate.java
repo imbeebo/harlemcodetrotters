@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.jstl.core.Config;
 
 import gonqbox.Pages;
+import gonqbox.Util;
 import gonqbox.dao.DAO;
 import gonqbox.models.User;
 
@@ -24,9 +25,8 @@ public class MakePublicPrivate extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse responce) throws ServletException, IOException {
 
-    	String loc = Config.get(request.getSession(), Config.FMT_LOCALE).toString();
-    	bundle = ResourceBundle.getBundle("ui_"+loc);
-		
+		bundle = Util.getResourceBundle(request);
+
     	if(request.getSession().getAttribute("user") == null){
     		request.setAttribute("index_messenger_err",bundle.getObject("noUserInSession"));
 	        RequestDispatcher rd=request.getRequestDispatcher(Pages.INDEX.toString());  

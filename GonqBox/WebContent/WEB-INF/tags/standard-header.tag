@@ -36,7 +36,7 @@
 			%>
 		<a class="navbar-brand m-b-0" href="/GonqBox/">GonqBox</a>
 		<% } else { %>
-		<a class="navbar-brand m-b-0" href="/GonqBox/folder">GonqBox</a>
+		<a class="navbar-brand m-b-0" href="folder">GonqBox</a>
 		<% } %>
 		<ul class="nav navbar-nav pull-xs-right">
 			<%
@@ -46,7 +46,7 @@
 				href="/GonqBox/"><fmt:message
 						bundle="${sessionScope.uitranslations}" key="login" /></a></li>
 			<li class="nav-item"><a type="button" class="btn btn-secondary"
-				href="/GonqBox/register"><fmt:message
+				href="register"><fmt:message
 						bundle="${sessionScope.uitranslations}" key="register" /></a></li>
 			<%
 				}
@@ -80,15 +80,15 @@
 			<li class="nav-item dropdown pull-left">
 				<a class="nav-link dropdown-toggle pull-left" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><fmt:message bundle="${sessionScope.uitranslations}" key="profile" /></a>
 				<div class="dropdown-menu pull-left">
-					<a class="dropdown-item" href="/GonqBox/folder"><fmt:message bundle="${sessionScope.uitranslations}"
+					<a class="dropdown-item" href="folder"><fmt:message bundle="${sessionScope.uitranslations}"
 							key="myFolder" /></a>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="/GonqBox/logout"><fmt:message bundle="${sessionScope.uitranslations}" key="logout" /></a>
+					<a class="dropdown-item" href="logout"><fmt:message bundle="${sessionScope.uitranslations}" key="logout" /></a>
 				</div>
 			</li>
 		</ul>
 				
-		<form class='navbar-form pull-xs-right' action='/GonqBox/upload'
+		<form class='navbar-form pull-xs-right' action='upload'
 			method='POST' onsubmit='submitFiles(event)' enctype='multipart/form-data'
 			id='upload-form'>
 			<div class='input-group'>

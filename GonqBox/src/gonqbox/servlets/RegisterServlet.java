@@ -12,6 +12,7 @@ import javax.servlet.jsp.jstl.core.Config;
 import java.util.ResourceBundle;
 
 import gonqbox.Pages;
+import gonqbox.Util;
 import gonqbox.dao.DAO;
 import gonqbox.models.User;
 
@@ -24,10 +25,8 @@ public class RegisterServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse responce) throws ServletException, IOException {
+		bundle = Util.getResourceBundle(request);
 
-    	String loc = Config.get(request.getSession(), Config.FMT_LOCALE).toString();
-    	bundle = ResourceBundle.getBundle("ui_"+loc);
-    	
 		String registerError = null;
 		boolean registerSuccess = false;
 		boolean validParams = true;
@@ -78,10 +77,8 @@ public class RegisterServlet extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse responce) throws ServletException, IOException {
-		String loc = Config.get(request.getSession(), Config.FMT_LOCALE).toString();
+		bundle = Util.getResourceBundle(request);
 
-    	bundle = ResourceBundle.getBundle("ui_"+loc);
-    	
 		User user = (User)request.getSession().getAttribute("user");
 
 		if (user != null){

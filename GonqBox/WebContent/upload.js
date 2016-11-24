@@ -85,7 +85,7 @@ function sendFiles() {
 			; // TODO: bar class for "unknown time remaining"
 	};
 
-	req.open('POST', '/GonqBox/upload?ajax=1');
+	req.open('POST', 'upload?ajax=1');
 
 	var form = new FormData();
 	form.append('upload-files', file.file);

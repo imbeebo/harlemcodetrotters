@@ -17,6 +17,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.List;
@@ -25,8 +26,7 @@ import java.util.Optional;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-import org.apache.catalina.tribes.util.Arrays;
-
+import gonqbox.Config;
 import gonqbox.models.Collaborator;
 import gonqbox.models.Comment;
 import gonqbox.models.File;
@@ -50,8 +50,8 @@ public class DAO {
 				String url = "jdbc:mysql://localhost:3306/";
 				String dbName = "gonqbox";
 				String driver = "com.mysql.jdbc.Driver";
-				String userName = System.getenv("db.username");
-				String password = System.getenv("db.password");
+				String userName = Config.dbUser;
+				String password = Config.dbPassword;
 				
 				Class.forName(driver).newInstance();
 				conn = DriverManager.getConnection(url + dbName, userName, password);

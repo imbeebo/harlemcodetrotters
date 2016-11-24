@@ -5,13 +5,14 @@
 
 package gonqbox.models;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import gonqbox.dao.DAO;
+public class User implements Serializable {
+	private static final long serialVersionUID = 7817459160910181039L;
 
-public class User {
 	private int user_id;
 	private String username;
 	private Date account_creation_date;

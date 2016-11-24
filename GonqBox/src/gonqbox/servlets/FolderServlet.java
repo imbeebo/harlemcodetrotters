@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.jstl.core.Config;
 
 import gonqbox.Pages;
+import gonqbox.Util;
 import gonqbox.dao.DAO;
 import gonqbox.models.Folder;
 import gonqbox.models.User;
@@ -28,18 +29,17 @@ public class FolderServlet extends HttpServlet {
 	        RequestDispatcher rd=req.getRequestDispatcher(Pages.INDEX.toString());  
 	        rd.forward(req,resp); 
 		}
-    	String loc = Config.get(req.getSession(), Config.FMT_LOCALE).toString();
-    	
-    	bundle = ResourceBundle.getBundle("ui_"+loc);
-    	
-    	if(req.getSession().getAttribute("user") == null){
+		bundle = Util.getResourceBundle(req);
+
+		User userMe = (User)req.getSession().getAttribute("user");
+		if(userMe == null){
     		req.setAttribute("index_messenger_err",bundle.getObject("noUserInSession"));
 	        RequestDispatcher rd=req.getRequestDispatcher(Pages.INDEX.toString());  
 	        rd.forward(req,resp); 
+			return;
     	}
     	
     	int userID = -1;
-    	User userMe = (User)req.getSession().getAttribute("user");
     	String userName = "";
     	User user = null;
     	boolean otherUser = false;

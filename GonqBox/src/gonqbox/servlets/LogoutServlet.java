@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.jstl.core.Config;
 
 import gonqbox.Pages;
+import gonqbox.Util;
 
 @WebServlet(name = "logout", urlPatterns = { "/logout" })
 public class LogoutServlet extends HttpServlet{
@@ -19,9 +20,8 @@ public class LogoutServlet extends HttpServlet{
 
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	String loc = Config.get(request.getSession(), Config.FMT_LOCALE).toString();
-    	bundle = ResourceBundle.getBundle("ui_"+loc);
-    	
+		bundle = Util.getResourceBundle(request);
+
 		if(request.getSession().getAttribute("user") != null){
 			request.getSession().setAttribute("user", null);
 			request.setAttribute("index_messenger",bundle.getObject("logoutSuccess"));

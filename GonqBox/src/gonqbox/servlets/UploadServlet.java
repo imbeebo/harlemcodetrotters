@@ -19,6 +19,7 @@ import javax.servlet.http.Part;
 
 import gonqbox.Config;
 import gonqbox.Result;
+import gonqbox.Util;
 import gonqbox.dao.DAO;
 import gonqbox.models.Folder;
 import gonqbox.models.User;
@@ -32,10 +33,8 @@ public class UploadServlet extends HttpServlet {
 	private ResourceBundle bundle = null;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String loc =  javax.servlet.jsp.jstl.core.Config.get(request.getSession(), javax.servlet.jsp.jstl.core.Config.FMT_LOCALE).toString();
-    	
-    	bundle = ResourceBundle.getBundle("ui_"+loc);
-    	
+		bundle = Util.getResourceBundle(request);
+
 		User user = (User)request.getSession().getAttribute("user");
 		if(user == null){
 			return;

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.jstl.core.Config;
 
 import gonqbox.Pages;
+import gonqbox.Util;
 import gonqbox.dao.DAO;
 import gonqbox.models.User;
 
@@ -39,10 +40,8 @@ public class LoginServlet extends HttpServlet{
      * @return void
      */
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	String loc = Config.get(request.getSession(), Config.FMT_LOCALE).toString();
-    	
-    	bundle = ResourceBundle.getBundle("ui_"+loc);
-    	
+		bundle = Util.getResourceBundle(request);
+
         String username = request.getParameter("username");  
         String password = request.getParameter("userpass"); 
         

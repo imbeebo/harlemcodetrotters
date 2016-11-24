@@ -13,6 +13,8 @@ public class Config {
 	// 1) Configuration values:
 	public static String uploadDirectory;
 	public static long maxFolderSize;
+	public static String dbUser;
+	public static String dbPassword;
 
 	private static final String CONFIG_LOCATION;
 	private static final Properties props;
@@ -22,6 +24,8 @@ public class Config {
 		// Default values:
 		defaults.setProperty("uploadDirectory", "uploads");
 		defaults.setProperty("maxFolderSize", "" + (64 * 1024 * 1024));
+		defaults.setProperty("dbUser", "gonqbox");
+		defaults.setProperty("dbPassword", "");
 
 		CONFIG_LOCATION = "gonqbox.cfg";
 		props = new Properties(defaults);
@@ -42,6 +46,8 @@ public class Config {
 
 		// 3) Copy properties into config fields:
 		uploadDirectory = props.getProperty("uploadDirectory");
+		dbUser = props.getProperty("dbUser");
+		dbPassword = props.getProperty("dbPassword");
 		try {
 			maxFolderSize = Long.parseLong(props.getProperty("maxFolderSize"));
 		} catch(NumberFormatException e) {
@@ -53,6 +59,8 @@ public class Config {
 		// 4) Copy config fields into properties:
 		props.setProperty("uploadDirectory", uploadDirectory);
 		props.setProperty("maxFolderSize", "" + maxFolderSize);
+		props.setProperty("dbUser", dbUser);
+		props.setProperty("dbPassword", dbPassword);
 
 		props.store(new FileWriter(CONFIG_LOCATION), null);
 	}
